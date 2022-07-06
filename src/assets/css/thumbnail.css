@@ -1,0 +1,14 @@
+.thumbnail_img img{
+width: 60px;
+height: 60px;
+display: block;
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 3px;
+margin-top: 5px;
+/* object-fit:cover */
+}
+
+form:focus{
+    border:3px solid blue!important;
+}

@@ -9,19 +9,19 @@ export const sidebarData = [
     iconClass: 'fab fa-wpforms',
     child: [
       {
-        listname: 'AllProducts',
+        listname: 'Products',
         routepath: '/Products',
         shortname: 'PR'
       },
       {
         listname: 'Categories',
         routepath: '/Categories',
-        shortname: 'PR'
+        shortname: 'CAT'
       },
       {
         listname: 'Brands',
         routepath: '/Brands',
-        shortname: 'PR'
+        shortname: 'BR'
       },
       { listname: 'Attributes',
       iconClass: "fas fa-users-cog",
@@ -29,22 +29,22 @@ export const sidebarData = [
         {
           listname: 'Colors',
           routepath: '/Colors',
-          shortname: 'Attr'
+          shortname: 'COL'
         },
         {
           listname: 'Papers',
           routepath: '/Papers',
-          shortname: 'Attr'
+          shortname: 'PPR'
         },
         {
           listname: 'Sizes',
           routepath: '/Sizes',
-          shortname: 'Attr'
+          shortname: 'SZ'
         },
         {
           listname: 'Markers',
           routepath: '/Markers',
-          shortname: 'Attr'
+          shortname: 'MKR'
         }
       ]
       }

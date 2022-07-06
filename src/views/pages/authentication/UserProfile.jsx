@@ -11,7 +11,7 @@ const UserProfile = () => {
     const [media, setMedia] = useState(false);
     const [info, setInfo] = useState(false);
 
-    const activePanel = (data) => {
+    const activePanel = data => {
         setFeed(false);
         setMedia(false);
         setInfo(false);
@@ -28,21 +28,21 @@ const UserProfile = () => {
         backgroundImage: `url(${loginBack})`,
         backgroundPosition: "center center",
         backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        backgroundRepeat: "no-repeat"
     };
 
     const titleStyle = {
-        background: "#563c91",
-        color: "white",
-        fontWeight: 600,
+        background: '#563c91',
+        color: 'white',
+        fontWeight: 600
     };
     const activeColor = {
-        color: "#563c91",
+        color: '#563c91'
     };
 
     const profileTabLink = {
         borderBottom: `2px solid`,
-        borderColor: "#563c91",
+        borderColor: '#563c91'
     };
 
     return (
@@ -88,16 +88,17 @@ const UserProfile = () => {
                                 </li>
                             </ul>
                         </div>
+
+                        <div>
                         <Info titleStyle={titleStyle} />
-                        {/* <div>
-                            {feed ? (
+                            {/* {feed ? (
                                 <Feed />
                             ) : info ? (
                                 <Info titleStyle={titleStyle} />
                             ) : (
                                 <Media />
-                            )}
-                        </div> */}
+                            )} */}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,10 +106,13 @@ const UserProfile = () => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        ...state.themeChanger,
+        ...state.themeChanger
     };
 };
 
-export default connect(mapStateToProps, null)(UserProfile);
+export default connect(
+    mapStateToProps,
+    null
+)(UserProfile);

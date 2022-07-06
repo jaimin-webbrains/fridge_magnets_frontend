@@ -155,6 +155,7 @@ const Colors = props => {
     });
   };
   return (
+    <div className="card m-2 p-2">
     <div className="container-fluid">
       <div className="row title-sec align-items-center">
         <div className="col-sm headline">Colors</div>
@@ -251,6 +252,7 @@ const Colors = props => {
         />
       )}
       </Modal>
+    </div>
     </div>
   );
 };

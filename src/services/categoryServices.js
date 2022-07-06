@@ -1,12 +1,18 @@
 import { api, handleResponse, handleError } from "./apiServices";
 
-export const getCategories = token =>
+export const getCategories = (token) =>
   api(token)
     .get("/categories/list")
     .then(handleResponse)
     .catch(handleError);
 
-export const getParentCategories = token =>
+export const getCategoryByParentId = (token,data) =>
+  api(token)
+    .post("/categories/cat-parentId",data)
+    .then(handleResponse)
+    .catch(handleError);
+
+export const getParentCategories = (token) =>
   api(token)
     .get("/categories/parent-list")
     .then(handleResponse)

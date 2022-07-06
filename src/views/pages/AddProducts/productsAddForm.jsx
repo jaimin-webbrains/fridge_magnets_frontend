@@ -15,12 +15,17 @@ import {
   getProductById,
   updateProduct,
 } from "services/productServices";
-import { getCategories, getParentCategories } from "services/categoryServices";
+import {
+  getCategories,
+  getCategoryByParentId,
+  getParentCategories,
+} from "services/categoryServices";
 import { getBrands } from "services/brandServices";
 import { getColors } from "services/colorServices";
 import { getPapers } from "services/paperServices";
 import { getSizes } from "services/sizeServices";
 import { getMarkers } from "services/markerServices";
+import "../../../assets/css/thumbnail.css";
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
@@ -46,7 +51,6 @@ const ProductsAddModal = (props) => {
   } = props;
 
   const { id } = useParams();
-  console.log("values", values);
   //USESTATE
 
   // const [inputValues, setInputValues] = useState({
@@ -66,6 +70,10 @@ const ProductsAddModal = (props) => {
   const [paperOptions, setPaperOptions] = useState([]);
   const [sizeOptions, setSizeOptions] = useState([]);
   const [markerOptions, setMarkerOptions] = useState([]);
+  const [img, setImg] = useState({ product_img: "" });
+  const [brandImg, setBrandImg] = useState([]);
+  const [brandimagArr, setBrandImgArr] = useState([]);
+  const [productImage, setProductImage] = useState();
 
   // FUNCTIONS
 
@@ -86,7 +94,6 @@ const ProductsAddModal = (props) => {
     await getParentCategories(token).then((data) => {
       if (data.success) {
         success();
-        console.log("data", data.data);
         setParentCatOptions(
           data.data.map((val) => ({ value: val.id, label: val.name }))
         );
@@ -98,7 +105,6 @@ const ProductsAddModal = (props) => {
     await getBrands(token).then((data) => {
       if (data.success) {
         success();
-        console.log("brands", data.data);
         setBrandOptions(
           data.data.map((val) => ({ value: val.id, label: val.name }))
         );
@@ -158,12 +164,27 @@ const ProductsAddModal = (props) => {
     await getProductById(token, id_data).then((data) => {
       if (data.success) {
         success();
-        setValues(data.data);
+        setValues({ ...data.data, deleted_brands: [] });
       } else {
         error(data.message);
       }
     });
   };
+
+  const getCategory_By_ParentId = async (val) => {
+    await getCategoryByParentId(token, { parent_id: val }).then((data) => {
+      if (data.success) {
+        success();
+        setCategoryOptions(
+          data.data.map((val) => ({ value: val.id, label: val.name }))
+        );
+      } else {
+        error(data.message);
+      }
+    });
+  };
+
+  //,deleted_brands:[]
 
   const Error = (props) => {
     const field1 = props.field;
@@ -204,22 +225,34 @@ const ProductsAddModal = (props) => {
       return <span />;
     }
   };
+  //IMAGE CHANGE
+  const onProductImageChange = (e) => {
+    const [file] = e.target.files;
+    setImg({ ...img, product_img: URL.createObjectURL(file) });
+  };
+  // console.log("productImage",img.product_img)
+
+  const onBrandImageChange = (e, k) => {
+    const [file] = e.target.files;
+    brandImg[k] = URL.createObjectURL(file);
+    setBrandImg(brandImg);
+  };
+
+  console.log("brandImg", brandImg[2]);
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
     var formData = new FormData();
+
     for (const val in values) {
-      console.log(val, "val");
       if (val === "deleted_brands") {
         formData.append(val, JSON.stringify(values[val]));
       } else if (val === "brands") {
-        values.brands.map((x) => formData.append("brand_image", x.brandimg));
+        brandimagArr.map((x) => formData.append("brand_image", x));
         formData.append(val, JSON.stringify(values[val]));
-      } else if (val === "brandimg2") {
-        // console.log("getting in brandimg2",val)
-        formData.append(val, values[val]);
-        console.log("getting in brandimg2", val, formData);
+      } else if (val === "product_image") {
+        formData.append(val, productImage ? productImage : values[val]);
       } else {
         formData.append(val, values[val]);
       }
@@ -262,298 +295,469 @@ const ProductsAddModal = (props) => {
   console.log("values", values);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12 mb-2">
-          <span className="">{`${id ? "Edit" : "Add"} Product`}</span>
-        </div>
-      </div>
-
-      {/* ADD PRODUCT */}
-
-      <div className="row">
-        <div className="col-md-4">
-          <div className="form-group">
-            <label>
-              Product Name <span className="error-msg">*</span>
-            </label>
-            <input
-              type="text"
-              className="form-control react-form-input"
-              placeholder="Enter The Product Name"
-              id="product_name"
-              onBlur={handleBlur}
-              onChange={handleChange}
-              value={values.product_name}
-            />
-            <Error field="product_name" />
+    <div className="card m-2 p-2">
+      <div className="container">
+        <div className="row">
+          <div className="col-12 mb-2">
+            <span className="font-weight-bolder">{`${id ? "Edit" : "Add"} Product`}</span>
           </div>
-        </div>
-        <div className="col-md-4">
-          <div className="form-group">
-            <label>
-              Parent Category <span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={parentCatOptions.find(
-                (x) => x.value === values.parent_category_id
-              )}
-              onChange={(val) => setFieldValue("parent_category_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={parentCatOptions}
-            />
-            <Error field="parent_category_id" />
-          </div>
-        </div>
-        <div className="col-md-4">
-          <div className="form-group">
-            <label>
-              Category <span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={categoryOptions.find(
-                (x) => x.value === values.category_id
-              )}
-              onChange={(val) => setFieldValue("category_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={categoryOptions}
-            />
-            <Error field="category_id" />
-          </div>
-        </div>
-      </div>
-
-      {/* ATTRIBUTES */}
-
-      <div className="row">
-        <div className="col-12 mb-2">
-          <span>Attributes</span>
         </div>
 
-        <div className="col-md-3">
-          <div className="form-group">
-            <label>
-              Color <span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={colorOptions.find((x) => x.value === values.color_id)}
-              onChange={(val) => setFieldValue("color_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={colorOptions}
-            />
-            <Error field="color_id" />
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="form-group">
-            <label>
-              Size <span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={sizeOptions.find((x) => x.value === values.size_id)}
-              onChange={(val) => setFieldValue("size_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={sizeOptions}
-            />
-            <Error field="size_id" />
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="form-group">
-            <label>
-              Paper Type<span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={paperOptions.find((x) => x.value === values.paper_type_id)}
-              onChange={(val) => setFieldValue("paper_type_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={paperOptions}
-            />
-            <Error field="paper_type_id" />
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="form-group">
-            <label>
-              Marker <span className="error-msg">*</span>
-            </label>
-            <CreatableSelect
-              isClearable
-              value={markerOptions.find((x) => x.value === values.marker_id)}
-              onChange={(val) => setFieldValue("marker_id", val.value)}
-              onInputChange={(val) => console.log(val)}
-              options={markerOptions}
-            />
-            <Error field="marker_id" />
-          </div>
-        </div>
-      </div>
+        {/* ADD PRODUCT */}
 
-      {/* BRANDS */}
-      
-      <div className="row mb-2">
-        <div className="col-9 ">
-          Brands <span className="error-msg">*</span>
-        </div>
-        <div className="col-3 text-center">
-          <button
-            className="btn btn-white border-0"
-            onClick={() => {
-              values.brands.push({
-                position: values.brands.length + 1,
-                brand_id: "",
-                brandimg: "",
-                product_show: "",
-              });
-              setValues(values);
-            }}
-          >
-            <AddCircleOutlineIcon />
-          </button>
-        </div>
-      </div>
-      {values.brands !== undefined &&
-        values.brands.map((s, k) => (
-          <div className="row">
-            <div className="col-md-3">
+        <div className="row">
+          <div className="col-md-4">
+            <div className="form-group">
+              <label>
+                Product Name <span className="error-msg">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control form"
+                placeholder="Enter The Product Name"
+                id="product_name"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.product_name}
+              />
+              <Error field="product_name" />
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="form-group">
+              <label>
+                Parent Category <span className="error-msg">*</span>
+              </label>
               <CreatableSelect
                 isClearable
-                value={brandOptions.find(
-                  (x) => x.value === values.brands[k].brand_name
-                )}
-                placeholder="Select or Create Brand"
-                onChange={(val) =>
-                  setFieldValue(`brands[${k}].brand_id`, val.value)
+                value={
+                  parentCatOptions.find(
+                    (x) => x.value === values.parent_category_id
+                  )
+                    ? parentCatOptions.find(
+                        (x) => x.value === values.parent_category_id
+                      )
+                    : null
                 }
-                options={brandOptions}
+                onChange={(val) => {
+                  getCategory_By_ParentId(val?.value);
+                  setFieldValue("parent_category_id", val?.value);
+                }}
+                onInputChange={(val) => console.log(val)}
+                options={parentCatOptions}
               />
-              <BrandsError field="brand_name" index={k} />
-            </div>
-
-            <div className="col-md-3">
-              <div className="form-group">
-                <input
-                  type="file"
-                  className="mr-2"
-                  id={`brands[${k}].brandimg`}
-                  accept="image/png, image/gif, image/jpeg"
-                  onBlur={handleBlur}
-                  onChange={(e) =>
-                    setFieldValue(`brands[${k}].brandimg`, e.target.files[0])
-                  }
-                />
-              </div>
-              <BrandsError field="brandimg" index={k} />
-            </div>
-
-            <div className="col-md-3">
-              <div className="form-group">
-                <input
-                  type="checkbox"
-                  className="mr-2 react-form-input"
-                  checked={s.product_show}
-                  id={`brands[${k}].product_show`}
-                  onBlur={handleBlur}
-                  onChange={(e)=>{
-                    // {console.log("e.target.checked",e.target.checked)}
-                    e.target.checked === true ?
-                    setFieldValue(`brands[${k}].product_show`,1): setFieldValue(`brands[${k}].product_show`,0)
-                  }}
-                />
-                <label>
-                  <span> Show on Homepage </span>
-                </label>
-              </div>
-            </div>
-            <div className="col-md-3">
-              <div className="text-center color-black">
-                <button
-                  className="btn btn-link  btn-white border-0 react-form-input"
-                  type="button"
-                  disabled={values.brands.length <= 1}
-                  onClick={() => {
-                    console.log("values", values.brands, id);
-                    // if (id) {
-                    values.deleted_brands.push(values.brands[k]);
-                    // }
-                    values.brands.splice(k, 1);
-                    setValues(values);
-                  }}
-                >
-                  <RemoveCircleOutlineIcon />
-                </button>
-              </div>
+              <Error field="parent_category_id" />
             </div>
           </div>
-        ))}
-
-      {/* IMAGE */}
-
-      <div className="row">
-        <div className="col-12 mb-2">
-          <span>Image</span>
+          <div className="col-md-4">
+            <div className="form-group">
+              <label>
+                Category <span className="error-msg">*</span>
+              </label>
+              <CreatableSelect
+                isClearable
+                value={
+                  categoryOptions.find((x) => x.value === values.category_id)
+                    ? categoryOptions.find(
+                        (x) => x.value === values.category_id
+                      )
+                    : null
+                }
+                onChange={(val) => setFieldValue("category_id", val?.value)}
+                onInputChange={(val) => console.log(val)}
+                options={categoryOptions}
+              />
+              <Error field="category_id" />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-md-6">
-          <input
-            type="file"
-            className="mr-2"
-            id="product_image"
-            accept="image/png, image/gif, image/jpeg"
-            onBlur={handleBlur}
-            onChange={(e) => setFieldValue("product_image", e.target.files[0])}
-          />
-          {typeof values.product_image === "string" ? (
-            <a
-              href={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values?.product_image}`}
-              alt={"product_image"}
-              target="_blank"
-              rel="noopener noreferrer"
+
+        {/* ATTRIBUTES */}
+
+        <div className="row">
+          <div className="col-12 mb-2">
+            <span>Attributes</span>
+          </div>
+
+          <div className="col-md-3">
+            <div className="form-group">
+              <label>
+                Color <span className="error-msg">*</span>
+              </label>
+              <CreatableSelect
+                isClearable
+                value={
+                  colorOptions.find((x) => x.value === values.color_id)
+                    ? colorOptions.find((x) => x.value === values.color_id)
+                    : null
+                }
+                onChange={(val) => setFieldValue("color_id", val?.value)}
+                onInputChange={(val) => console.log(val)}
+                options={colorOptions}
+              />
+              <Error field="color_id" />
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="form-group">
+              <label>
+                Size <span className="error-msg">*</span>
+              </label>
+              <CreatableSelect
+                isClearable
+                value={
+                  sizeOptions.find((x) => x.value === values.size_id)
+                    ? sizeOptions.find((x) => x.value === values.size_id)
+                    : null
+                }
+                onChange={(val) => setFieldValue("size_id", val?.value)}
+                onInputChange={(val) => console.log(val)}
+                options={sizeOptions}
+              />
+              <Error field="size_id" />
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="form-group">
+              <label>
+                Paper Type<span className="error-msg">*</span>
+              </label>
+              <CreatableSelect
+                isClearable
+                value={
+                  paperOptions.find((x) => x.value === values.paper_type_id)
+                    ? paperOptions.find((x) => x.value === values.paper_type_id)
+                    : null
+                }
+                onChange={(val) => setFieldValue("paper_type_id", val?.value)}
+                onInputChange={(val) => console.log(val)}
+                options={paperOptions}
+              />
+              <Error field="paper_type_id" />
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div className="form-group">
+              <label>
+                Marker <span className="error-msg">*</span>
+              </label>
+              <CreatableSelect
+                isClearable
+                value={
+                  markerOptions.find((x) => x.value === values.marker_id)
+                    ? markerOptions.find((x) => x.value === values.marker_id)
+                    : null
+                }
+                onChange={(val) => setFieldValue("marker_id", val?.value)}
+                onInputChange={(val) => console.log(val)}
+                options={markerOptions}
+              />
+              <Error field="marker_id" />
+            </div>
+          </div>
+        </div>
+
+        {/* BRANDS */}
+
+        <div className="row mb-2">
+          <div className="col-9 ">
+            Brands <span className="error-msg">*</span>
+          </div>
+          <div className="col-3 text-center">
+            <button
+              className="btn btn-white border-0"
+              onClick={() => {
+                values.brands.push({
+                  position: values.brands.length + 1,
+                  brand_id: "",
+                  brandimg: "",
+                  show_on_homepage: 0,
+                });
+                setValues(values);
+              }}
             >
-              {values?.product_image}
-            </a>
-          ) : (
-            <></>
-          )}
+              <AddCircleOutlineIcon />
+            </button>
+          </div>
         </div>
-        <div className="col-md-6">
-          <div className="form-group">
+        {values.brands !== undefined &&
+          values.brands.map((s, k) => (
+            <div className="row">
+              <div className="col-md-3">
+                <div>
+                  <label>Select Brand</label>
+                </div>
+                <CreatableSelect
+                  isClearable
+                  value={
+                    brandOptions.find(
+                      (x) => x.value === values.brands[k].brand_id
+                    )
+                      ? brandOptions.find(
+                          (x) => x.value === values.brands[k].brand_id
+                        )
+                      : null
+                  }
+                  placeholder="Select or Create Brand"
+                  onChange={(val) =>
+                    setFieldValue(`brands[${k}].brand_id`, val?.value)
+                  }
+                  options={brandOptions}
+                />
+
+                <BrandsError field="brand_id" index={k} />
+              </div>
+
+              <div className="col-md-3">
+                <div className="form-group">
+                  <div>
+                    <label>Select Brand Image</label>
+                  </div>
+                  <input
+                    type="file"
+                    className="mr-2"
+                    id={`brands[${k}].brandimg`}
+                    accept="image/png, image/gif, image/jpeg"
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      onBrandImageChange(e, k);
+                      setBrandImgArr([...brandimagArr, e.target.files[0]]);
+                      setFieldValue(
+                        `brands[${k}].brandimg`,
+                        e.target.files[0]?.name
+                      );
+                    }}
+                  />
+
+                  <>
+                    {brandImg[k] ? (
+                      <a
+                        href={brandImg[k]}
+                        alt={"product_image"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="thumbnail_img"
+                      >
+                        <img src={brandImg[k]} alt="product-img" />
+                      </a>
+                    ) : (
+                      <>
+                        <a
+                          href={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values.brands[k].brandimg}`}
+                          alt={"brand_image"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={
+                            values.brands[k].brandimg
+                              ? "d-block thumbnail_img"
+                              : "d-none"
+                          }
+                        >
+                          <img
+                            src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values.brands[k].brandimg}`}
+                            alt="product-img"
+                          />
+                        </a>
+                      </>
+                    )}
+                  </>
+
+                  {/*     {values.brands[k].id ? (
+                  <a
+                    href={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values.brands[k].brandimg}`}
+                    alt={"brand_image"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={
+                      values.brands[k].brandimg
+                        ? "d-block thumbnail_img"
+                        : "d-none"
+                    }
+                  >
+                    <img
+                      src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values.brands[k].brandimg}`}
+                      alt="product-img"
+                    />
+                  </a>
+                // ) : (
+                  // <>
+                  //   { brandImg[k] ? (
+                  //     <a
+                  //       href={brandImg[k]}
+                  //       alt={"product_image"}
+                  //       target="_blank"
+                  //       rel="noopener noreferrer"
+                  //       className="thumbnail_img"
+                  //     >
+                  //       <img src={brandImg[k]} alt="product-img" />
+                  //     </a>
+                  //   ) : (
+                  //     <></>
+                  //   )}
+                  // </>
+                )} */}
+                </div>
+                <BrandsError field="brandimg" index={k} />
+              </div>
+
+              <div className="col-md-3 mt-4 pt-2">
+                <div className="form-group">
+                  <input
+                    type="checkbox"
+                    className="mr-2 react-form-input"
+                    checked={values.brands[k].show_on_homepage ? true : false}
+                    id={`brands[${k}].show_on_homepage`}
+                    onBlur={handleBlur}
+                    onChange={(e) => {
+                      e.target.checked === true
+                        ? setFieldValue(`brands[${k}].show_on_homepage`, 1)
+                        : setFieldValue(`brands[${k}].show_on_homepage`, 0);
+                    }}
+                  />
+                  <label htmlFor={`brands[${k}].show_on_homepage`}>
+                    <span> Show on Homepage </span>
+                  </label>
+                </div>
+              </div>
+              <div className="col-md-3">
+                <div className="text-center color-black">
+                  <button
+                    className="btn btn-link  btn-white border-0 react-form-input"
+                    type="button"
+                    disabled={values.brands.length <= 1}
+                    onClick={() => {
+                      console.log("values", values, id);
+                      if (id) {
+                        values.deleted_brands.push(values.brands[k].id);
+                      }
+                      values.brands.splice(k, 1);
+                      setValues(values);
+                    }}
+                  >
+                    <RemoveCircleOutlineIcon />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+
+        {/* IMAGE */}
+
+        <div className="row">
+          <div className="col-12 mb-2">
+            <span>Featured Image</span>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6">
             <input
-              type="checkbox"
-              className="mr-2 react-form-input"
-              id="show_on_home_page"
-              checked={values.show_on_home_page ? true : false}
+              type="file"
+              className="mr-2"
+              id="product_image"
+              accept="image/png, image/gif, image/jpeg"
               onBlur={handleBlur}
               onChange={(e) => {
-                e.target.checked === true
-                  ? setFieldValue("show_on_home_page", 1)
-                  : setFieldValue(`show_on_home_page`, 0);
+                onProductImageChange(e);
+                setProductImage(e.target.files[0]);
+                setFieldValue("product_image", e.target.files[0]?.name);
               }}
             />
-            <label>
-              <span> Show on Homepage </span>
-            </label>
+            {console.log("values?.product_image", values?.product_image)}
+            {/* {typeof values.product_image === "string" ? ( */}
+            {productImage ? (
+              // <a
+              //   href={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values?.product_image}`}
+              //   alt={"product_image"}
+              //   target="_blank"
+              //   rel="noopener noreferrer"
+              //   className={
+              //     values?.product_image ? "d-block thumbnail_img" : "d-none"
+              //   }
+              // >
+              //   <img
+              //     src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values?.product_image}`}
+              //     alt="product-img"
+              //   />
+              // </a>
+              <>
+                <a
+                  href={img.product_img}
+                  alt={"product_image"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={
+                    img.product_img ? "d-block thumbnail_img" : "d-none"
+                  }
+                >
+                  {console.log("object thing", img.product_img)}
+                  <img src={img.product_img} alt="product-img" />
+                </a>
+              </>
+            ) : (
+              // <>
+              //   <a
+              //     href={img.product_img}
+              //     alt={"product_image"}
+              //     target="_blank"
+              //     rel="noopener noreferrer"
+              //     className={img.product_img ? "d-block thumbnail_img" : "d-none"}
+              //   >
+              //     {console.log("object thing",img.product_img)}
+              //     <img src={img.product_img} alt="product-img" />
+              //   </a>
+              // </>
+              <a
+                href={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values?.product_image}`}
+                alt={"product_image"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={
+                  values?.product_image ? "d-block thumbnail_img" : "d-none"
+                }
+              >
+                <img
+                  src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${values?.product_image}`}
+                  alt="product-img"
+                />
+              </a>
+            )}
+            <div>
+              <Error field="product_image" />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <input
+                type="checkbox"
+                className="mr-2 react-form-input"
+                id="show_on_home_page"
+                checked={values.show_on_home_page ? true : false}
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  e.target.checked === true
+                    ? setFieldValue("show_on_home_page", 1)
+                    : setFieldValue(`show_on_home_page`, 0);
+                }}
+              />
+              <label>
+                <span> Show on Homepage </span>
+              </label>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* BUTTON */}
-      <div className="row">
-        <div className="col-12 text-center">
-          <Button
-            className="btn c-primary px-5"
-            onClick={(e) => handleProductSubmit(e)}
-            type="button"
-            disabled={isFetching}
-          >
-            {id ? "Edit" : "Add"}
-          </Button>
+        {/* BUTTON */}
+        <div className="row">
+          <div className="col-12 text-center">
+            <Button
+              className="btn c-primary px-5"
+              onClick={(e) => handleProductSubmit(e)}
+              type="button"
+              disabled={isFetching}
+            >
+              {id ? "Update" : "Add"}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
