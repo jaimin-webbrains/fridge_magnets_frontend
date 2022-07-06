@@ -3,7 +3,10 @@ import * as Yup from "yup";
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
-    product_name: Yup.string().required("Please Enter Product Name"),
+    product_name: Yup.string()
+    .required("Please Enter Product Name")
+    .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please enter valid Product Name"),
+
     parent_category_id: Yup.string().required("Please Select Parent Category"),
     category_id: Yup.string().required("Please Select Category"),
     brands: Yup.array().of(

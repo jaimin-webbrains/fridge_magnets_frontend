@@ -79,7 +79,7 @@ const ChattngBoard = props => {
             <li className="list-inline-item">
               <img
                 className="chat-board-user-profile"
-                src={activeUser.profile}
+                // src={activeUser.profile}
                 alt="User"
               />
             </li>

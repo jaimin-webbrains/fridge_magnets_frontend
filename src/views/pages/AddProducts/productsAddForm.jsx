@@ -66,6 +66,7 @@ const ProductsAddModal = (props) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [parentCatOptions, setParentCatOptions] = useState([]);
   const [brandOptions, setBrandOptions] = useState([]);
+  const [unselectedBrand,setUnselectedBrand] = useState([])
   const [colorOptions, setcolorOptions] = useState([]);
   const [paperOptions, setPaperOptions] = useState([]);
   const [sizeOptions, setSizeOptions] = useState([]);
@@ -74,6 +75,7 @@ const ProductsAddModal = (props) => {
   const [brandImg, setBrandImg] = useState([]);
   const [brandimagArr, setBrandImgArr] = useState([]);
   const [productImage, setProductImage] = useState();
+
 
   // FUNCTIONS
 
@@ -230,15 +232,13 @@ const ProductsAddModal = (props) => {
     const [file] = e.target.files;
     setImg({ ...img, product_img: URL.createObjectURL(file) });
   };
-  // console.log("productImage",img.product_img)
 
   const onBrandImageChange = (e, k) => {
     const [file] = e.target.files;
     brandImg[k] = URL.createObjectURL(file);
     setBrandImg(brandImg);
   };
-
-  console.log("brandImg", brandImg[2]);
+  
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
@@ -299,7 +299,7 @@ const ProductsAddModal = (props) => {
       <div className="container">
         <div className="row">
           <div className="col-12 mb-2">
-            <span className="font-weight-bolder">{`${id ? "Edit" : "Add"} Product`}</span>
+            <span style={{fontSize:"20px",fontWeight:"600"}}>{`${id ? "Edit" : "Add"} Product`}</span>
           </div>
         </div>
 
@@ -490,6 +490,7 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
+                    
                     brandOptions.find(
                       (x) => x.value === values.brands[k].brand_id
                     )
@@ -499,8 +500,10 @@ const ProductsAddModal = (props) => {
                       : null
                   }
                   placeholder="Select or Create Brand"
-                  onChange={(val) =>
-                    setFieldValue(`brands[${k}].brand_id`, val?.value)
+                  onChange={(val) =>                   
+                 {      
+                    // console.log("brandOptions",values.brands.map(x=>brandOptions.find(i=>i.value===x.brand_id)))
+                    setFieldValue(`brands[${k}].brand_id`, val?.value)}
                   }
                   options={brandOptions}
                 />
@@ -622,7 +625,7 @@ const ProductsAddModal = (props) => {
               <div className="col-md-3">
                 <div className="text-center color-black">
                   <button
-                    className="btn btn-link  btn-white border-0 react-form-input"
+                    className="btn btn-link mt-4 pt-2 btn-white border-0 react-form-input"
                     type="button"
                     disabled={values.brands.length <= 1}
                     onClick={() => {
@@ -662,7 +665,6 @@ const ProductsAddModal = (props) => {
                 setFieldValue("product_image", e.target.files[0]?.name);
               }}
             />
-            {console.log("values?.product_image", values?.product_image)}
             {/* {typeof values.product_image === "string" ? ( */}
             {productImage ? (
               // <a

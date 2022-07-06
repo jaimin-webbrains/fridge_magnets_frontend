@@ -123,7 +123,11 @@ const CategoriesAddModal = (props) => {
         {`${isEdit ? "Edit" : "Add"} Category`}
       </ModalHeader>
       <ModalBody>
-        <div className="form-group">
+        {/* { console.log(categoryOptions.filter((x) => x.value !== editData.id))} */}
+
+      {( editData.parent_id === 0
+                ? categoryOptions.filter((x) => x.value !== editData.id)
+                : categoryOptions).length > 0? <div className="form-group">
           <label>Parent Category</label>
           <Select
             id="parent_id"
@@ -140,6 +144,12 @@ const CategoriesAddModal = (props) => {
           />
           <Error field="parentCategory" />
         </div>
+        :
+        <></>
+
+        }
+          
+        
         <div className="form-group">
           <label>
             Category Name <span className="error-msg">*</span>

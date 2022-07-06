@@ -9,6 +9,7 @@ margin-top: 5px;
 /* object-fit:cover */
 }
 
-form:focus{
-    border:3px solid blue!important;
+.form:focus{
+    border:2px solid #007bff;
+    box-shadow: none!important;
 }
