@@ -66,7 +66,6 @@ const ProductsAddModal = (props) => {
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [parentCatOptions, setParentCatOptions] = useState([]);
   const [brandOptions, setBrandOptions] = useState([]);
-  const [unselectedBrand,setUnselectedBrand] = useState([])
   const [colorOptions, setcolorOptions] = useState([]);
   const [paperOptions, setPaperOptions] = useState([]);
   const [sizeOptions, setSizeOptions] = useState([]);
