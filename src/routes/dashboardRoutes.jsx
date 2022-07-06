@@ -11,6 +11,7 @@ import markers from "views/pages/Markers/markers";
 import markersAddModal from "views/pages/Markers/markersAddModal";
 import papers from "views/pages/Papers/papers";
 import papersAddModal from "views/pages/Papers/papersAddModal";
+import settings from "views/pages/Settings/settings";
 import sizes from "views/pages/Sizes/sizes";
 import sizesAddModal from "views/pages/Sizes/sizesAddModal";
 
@@ -37,6 +38,8 @@ const dashboardRoutes = [
   { path: "/Products", component: products },
   { path: "/Products/add", component: productsAddForm },
   { path: "/Products/edit/:id", component: productsAddForm },
+
+  { path: "/Settings", component: settings },
 ];
 
 export default dashboardRoutes;
