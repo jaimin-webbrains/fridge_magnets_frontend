@@ -27,6 +27,7 @@ import { getSizes } from "services/sizeServices";
 import { getMarkers } from "services/markerServices";
 import "../../../assets/css/thumbnail.css";
 
+
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
@@ -173,6 +174,7 @@ const ProductsAddModal = (props) => {
   };
 
   const getCategory_By_ParentId = async (val) => {
+    console.log("val ",val)
     await getCategoryByParentId(token, { parent_id: val }).then((data) => {
       if (data.success) {
         success();
@@ -184,6 +186,9 @@ const ProductsAddModal = (props) => {
       }
     });
   };
+
+  // const val =;
+  // console.log("brandoptions",val)
 
   //,deleted_brands:[]
 
@@ -501,12 +506,13 @@ const ProductsAddModal = (props) => {
                   placeholder="Select or Create Brand"
                   onChange={(val) =>                   
                  {      
-                    // console.log("brandOptions",values.brands.map(x=>brandOptions.find(i=>i.value===x.brand_id)))
                     setFieldValue(`brands[${k}].brand_id`, val?.value)}
                   }
-                  options={brandOptions}
-                />
-
+                  // options={ brandOptions}
+                  options={ brandOptions.filter(o1 => !values.brands.some(o2 => o1.value === o2.brand_id))}
+                  />
+                
+                   
                 <BrandsError field="brand_id" index={k} />
               </div>
 

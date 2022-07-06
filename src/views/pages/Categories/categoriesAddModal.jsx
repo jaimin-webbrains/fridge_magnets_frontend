@@ -39,7 +39,6 @@ const CategoriesAddModal = (props) => {
     editData,
     isFetching,
   } = props;
-  console.log("props",props)
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const Error = (props) => {
@@ -54,7 +53,6 @@ const CategoriesAddModal = (props) => {
       return <span />;
     }
   };
-  console.log(isFetching, "isFetching");
 
   const get_ParentCategories = async () => {
     await getParentCategories(token).then((data) => {
@@ -122,12 +120,12 @@ const CategoriesAddModal = (props) => {
       <ModalHeader toggle={() => onClose()}>
         {`${isEdit ? "Edit" : "Add"} Category`}
       </ModalHeader>
-      <ModalBody>
-        {/* { console.log(categoryOptions.filter((x) => x.value !== editData.id))} */}
+      <ModalBody> 
 
       {( editData.parent_id === 0
                 ? categoryOptions.filter((x) => x.value !== editData.id)
-                : categoryOptions).length > 0? <div className="form-group">
+                : categoryOptions).length > 0? 
+                <div className="form-group">
           <label>Parent Category</label>
           <Select
             id="parent_id"
@@ -147,7 +145,7 @@ const CategoriesAddModal = (props) => {
         :
         <></>
 
-        }
+        } 
           
         
         <div className="form-group">
