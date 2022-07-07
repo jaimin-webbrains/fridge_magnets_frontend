@@ -13,3 +13,11 @@ margin-top: 5px;
     border:2px solid rgb(6, 6, 112);
     box-shadow: none!important;
 }
+
+.sec_height{
+    height:35px;
+}
+.sec_border{
+    border-bottom: 1px solid #dee2e6!important;
+    margin: 10px 0;
+}

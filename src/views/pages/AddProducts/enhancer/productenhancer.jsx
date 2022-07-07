@@ -16,6 +16,10 @@ const formikEnhancer = withFormik({
       })
     ),
     product_image: Yup.string().required("Please select Product Image"),
+    product_quantity:Yup.string().required("Please Enter Product Quantity")
+    .matches(/^[0-9,]*[0-9]$/, "Please enter valid Quantity"),
+    // SKU:Yup.string().required("Please enter SKU"),
+
   }),
   validateOnMount: true,
   mapPropsToValues: (props) => ({
@@ -30,6 +34,8 @@ const formikEnhancer = withFormik({
     show_on_home_page: 0,
     brands: [{ position: 1, brand_id: "", brandimg: "", show_on_homepage: 0 }],
     deleted_brands: [],
+    product_quantity:"",
+    SKU:""
   }),
   handleSubmit: (values) => {},
   displayName: "CustomValidationForm",
