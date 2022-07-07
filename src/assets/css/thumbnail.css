@@ -9,6 +9,15 @@ margin-top: 5px;
 /* object-fit:cover */
 }
 
-form:focus{
-    border:3px solid blue!important;
+.form:focus{
+    border:2px solid rgb(6, 6, 112);
+    box-shadow: none!important;
+}
+
+.sec_height{
+    height:35px;
+}
+.sec_border{
+    border-bottom: 1px solid #dee2e6!important;
+    margin: 10px 0;
 }

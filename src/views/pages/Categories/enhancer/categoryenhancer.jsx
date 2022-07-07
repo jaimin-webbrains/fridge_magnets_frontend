@@ -6,6 +6,7 @@ const formikEnhancer = withFormik({
     name: Yup.string()
       .required("Please enter Name")
       .max(50)
+      .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please enter valid Category Name")
       ,
       description:Yup.string()
       .required("Please enter description"),

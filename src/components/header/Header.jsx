@@ -135,12 +135,12 @@ const Header = (props) => {
                         </button>
                     </div> */}
                     <div className="pl-10">
-                        <div id="profile">
-                            <img
+                        <div id="profile">  
+                            {/* <img
                                 className="top-header-profile-class"
                                 src={ProfileLockScreen}
                                 alt="notify"
-                            />
+                            /> */}
                         </div>
                         <UncontrolledPopover
                             className="roy-menu"

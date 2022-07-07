@@ -3,7 +3,10 @@ import * as Yup from "yup";
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
-    product_name: Yup.string().required("Please Enter Product Name"),
+    product_name: Yup.string()
+    .required("Please Enter Product Name")
+    .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please enter valid Product Name"),
+
     parent_category_id: Yup.string().required("Please Select Parent Category"),
     category_id: Yup.string().required("Please Select Category"),
     brands: Yup.array().of(
@@ -13,6 +16,10 @@ const formikEnhancer = withFormik({
       })
     ),
     product_image: Yup.string().required("Please select Product Image"),
+    product_quantity:Yup.string().required("Please Enter Product Quantity")
+    .matches(/^[0-9,]*[0-9]$/, "Please enter valid Quantity"),
+    // SKU:Yup.string().required("Please enter SKU"),
+
   }),
   validateOnMount: true,
   mapPropsToValues: (props) => ({
@@ -27,6 +34,8 @@ const formikEnhancer = withFormik({
     show_on_home_page: 0,
     brands: [{ position: 1, brand_id: "", brandimg: "", show_on_homepage: 0 }],
     deleted_brands: [],
+    product_quantity:"",
+    SKU:""
   }),
   handleSubmit: (values) => {},
   displayName: "CustomValidationForm",
