@@ -80,18 +80,16 @@ const ProductsAddModal = (props) => {
   //List API CALLING
 
   const List_allItems = async () => {
-   
-      await getCategories(token).then((data) => {
-        if (data.success) {
-          success();
-          setCategoryOptions(
-            data.data.map((val) => ({ value: val.id, label: val.name }))
-          );
-        } else {
-          error(data.message);
-        }
-      });
-    
+    await getCategories(token).then((data) => {
+      if (data.success) {
+        success();
+        setCategoryOptions(
+          data.data.map((val) => ({ value: val.id, label: val.name }))
+        );
+      } else {
+        error(data.message);
+      }
+    });
 
     await getParentCategories(token).then((data) => {
       if (data.success) {
@@ -174,7 +172,6 @@ const ProductsAddModal = (props) => {
   };
 
   const getCategory_By_ParentId = async (val) => {
-    
     if (val) {
       await getCategoryByParentId(token, { parent_id: val }).then((data) => {
         if (data.success) {
@@ -189,7 +186,6 @@ const ProductsAddModal = (props) => {
       });
     }
   };
-
 
   const Error = (props) => {
     const field1 = props.field;
@@ -246,7 +242,7 @@ const ProductsAddModal = (props) => {
     e.preventDefault();
     handleSubmit();
     var formData = new FormData();
-
+    console.log(values, "values");
     for (const val in values) {
       if (val === "deleted_brands") {
         formData.append(val, JSON.stringify(values[val]));
@@ -255,11 +251,26 @@ const ProductsAddModal = (props) => {
         formData.append(val, JSON.stringify(values[val]));
       } else if (val === "product_image") {
         formData.append(val, productImage ? productImage : values[val]);
+      } else if (
+        val === "color_id" ||
+        val === "size_id" ||
+        val === "marker_id" ||
+        val === "paper_type_id"
+      ) {
+        console.log(val, "val");
+        console.log(values[val], "values[val]");
+        console.log(typeof values[val], "typeof values[val]");
+        console.log(val !== null, "conition");
+        formData.append(
+          val,
+          val && val !== null && val !== undefined ? values[val] : 0
+        );
       } else {
         formData.append(val, values[val]);
       }
     }
-
+    console.log("formdata", formData);
+    // return;
     if (isValid) {
       fetching();
       id
@@ -362,6 +373,7 @@ const ProductsAddModal = (props) => {
                   }
                   onChange={(val) => {
                     setFieldValue("parent_category_id", val?.value);
+                    setFieldValue("category_id", "");
                   }}
                   onInputChange={(val) => console.log(val)}
                   options={parentCatOptions}
@@ -445,9 +457,13 @@ const ProductsAddModal = (props) => {
                       ? colorOptions.find((x) => x.value === values.color_id)
                       : null
                   }
-                  onChange={(val) => 
-                   { 
-                    setFieldValue("color_id", val?.value===null?0:val?.value)}}
+                  onChange={(val) => {
+                    if (val) {
+                      setFieldValue("color_id", val?.value);
+                    } else {
+                      setFieldValue("color_id", 0);
+                    }
+                  }}
                   onInputChange={(val) => console.log(val)}
                   options={colorOptions}
                 />
@@ -467,7 +483,13 @@ const ProductsAddModal = (props) => {
                       ? sizeOptions.find((x) => x.value === values.size_id)
                       : null
                   }
-                  onChange={(val) => setFieldValue("size_id", val?.value===null?0:val?.value)}
+                  onChange={(val) => 
+                   { if (val) {
+                    setFieldValue("size_id", val?.value)
+                    } else {
+                      setFieldValue("size_id", 0);
+                    }}
+                    }
                   onInputChange={(val) => console.log(val)}
                   options={sizeOptions}
                 />
@@ -489,7 +511,13 @@ const ProductsAddModal = (props) => {
                         )
                       : null
                   }
-                  onChange={(val) => setFieldValue("paper_type_id", val?.value===null ? 0 : val?.value)}
+                  onChange={(val) =>
+                    { if (val) {
+                      setFieldValue("paper_type_id", val?.value)
+                      } else {
+                        setFieldValue("paper_type_id", 0);
+                      }}
+                     }
                   onInputChange={(val) => console.log(val)}
                   options={paperOptions}
                 />
@@ -509,7 +537,13 @@ const ProductsAddModal = (props) => {
                       ? markerOptions.find((x) => x.value === values.marker_id)
                       : null
                   }
-                  onChange={(val) => setFieldValue("marker_id", val?.value===null ? 0 : val?.value)}
+                  onChange={(val) =>
+                    { if (val) {
+                      setFieldValue("marker_id", val?.value)
+                      } else {
+                        setFieldValue("marker_id", 0);
+                      }}
+                    }
                   onInputChange={(val) => console.log(val)}
                   options={markerOptions}
                 />
