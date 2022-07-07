@@ -5,71 +5,58 @@ export const sidebarData = [
   //   iconClass: 'fas fa-chalkboard'
   // },
   {
-    name: 'Products',
-    iconClass: 'fab fa-wpforms',
+    name: "Products",
+    iconClass: "fab fa-wpforms",
     child: [
       {
-        listname: 'Products',
-        routepath: '/Products',
-        shortname: 'PR'
+        listname: "Products",
+        routepath: "/Products",
+        shortname: "PR",
       },
       {
-        listname: 'Categories',
-        routepath: '/Categories',
-        shortname: 'CAT'
+        listname: "Categories",
+        routepath: "/Categories",
+        shortname: "CAT",
       },
       {
-        listname: 'Brands',
-        routepath: '/Brands',
-        shortname: 'BR'
+        listname: "Brands",
+        routepath: "/Brands",
+        shortname: "BR",
       },
-      { listname: 'Attributes',
-      iconClass: "fas fa-users-cog",
-      child: [
-        {
-          listname: 'Colors',
-          routepath: '/Colors',
-          shortname: 'COL'
-        },
-        {
-          listname: 'Papers',
-          routepath: '/Papers',
-          shortname: 'PPR'
-        },
-        {
-          listname: 'Sizes',
-          routepath: '/Sizes',
-          shortname: 'SZ'
-        },
-        {
-          listname: 'Markers',
-          routepath: '/Markers',
-          shortname: 'MKR'
-        }
-      ]
-      }
-    ]
+      {
+        listname: "Attributes",
+        iconClass: "fas fa-users-cog",
+        child: [
+          {
+            listname: "Colors",
+            routepath: "/Colors",
+            shortname: "COL",
+          },
+          {
+            listname: "Papers",
+            routepath: "/Papers",
+            shortname: "PPR",
+          },
+          {
+            listname: "Sizes",
+            routepath: "/Sizes",
+            shortname: "SZ",
+          },
+          {
+            listname: "Markers",
+            routepath: "/Markers",
+            shortname: "MKR",
+          },
+        ],
+      },
+    ],
   },
-  // {
-  //   name: 'Categories',
-  //   routepath: '/Categories',
-  //   iconClass: 'fas fa-chalkboard'
-  // },
-  // {
-  //   name: 'Brands',
-  //   routepath: '/Brands',
-  //   iconClass: 'fas fa-chalkboard'
-  // },
-  // {
-  //   name: 'Colors',
-  //   routepath: '/Colors',
-  //   iconClass: 'fas fa-chalkboard'
-  // }
-  
+  {
+    name: "Settings",
+    routepath: "/Settings",
+    iconClass: "fa fa-cog",
+  },
 ];
-
-
-
 
 // Comments:::::::
 
@@ -113,9 +100,9 @@ export const sidebarData = [
 
 export const HorizontalSidebarData = [
   {
-      name: 'sidebar.intro',
-      routepath: '/Intro',
-      iconClass: 'fas fa-chalkboard'
+    name: "sidebar.intro",
+    routepath: "/Intro",
+    iconClass: "fas fa-chalkboard",
   },
 ];
 
