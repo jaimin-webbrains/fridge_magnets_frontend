@@ -31,6 +31,7 @@ const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
 const ProductsAddModal = (props) => {
+  
   //VARIABLES
   const {
     token,
@@ -51,17 +52,8 @@ const ProductsAddModal = (props) => {
   } = props;
 
   const { id } = useParams();
-  //USESTATE
 
-  // const [inputValues, setInputValues] = useState({
-  //   parentCategory: "",
-  //   brands: "",
-  //   category: "",
-  //   color: "",
-  //   size: "",
-  //   paperType: "",
-  //   marker: "",
-  // });
+  //USESTATE
 
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [parentCatOptions, setParentCatOptions] = useState([]);
@@ -229,20 +221,27 @@ const ProductsAddModal = (props) => {
   //IMAGE CHANGE
   const onProductImageChange = (e) => {
     const [file] = e.target.files;
-    setImg({ ...img, product_img: URL.createObjectURL(file) });
+    if(file){
+      setImg({ ...img, product_img: URL.createObjectURL(file) });
+    }
   };
 
   const onBrandImageChange = (e, k) => {
-    const [file] = e.target.files;
-    brandImg[k] = URL.createObjectURL(file);
-    setBrandImg(brandImg);
+    const [file] = e.target.files;    
+    if(file){
+      brandImg[k] = URL.createObjectURL(file);
+      setBrandImg(brandImg);
+    }
+    else{
+      brandImg[k] = "";
+      setBrandImg(brandImg);
+    }
   };
 
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
     var formData = new FormData();
-    console.log(values, "values");
     for (const val in values) {
       if (val === "deleted_brands") {
         formData.append(val, JSON.stringify(values[val]));
@@ -257,10 +256,6 @@ const ProductsAddModal = (props) => {
         val === "marker_id" ||
         val === "paper_type_id"
       ) {
-        console.log(val, "val");
-        console.log(values[val], "values[val]");
-        console.log(typeof values[val], "typeof values[val]");
-        console.log(val !== null, "conition");
         formData.append(
           val,
           val && val !== null && val !== undefined ? values[val] : 0
@@ -269,8 +264,7 @@ const ProductsAddModal = (props) => {
         formData.append(val, values[val]);
       }
     }
-    console.log("formdata", formData);
-    // return;
+
     if (isValid) {
       fetching();
       id
@@ -311,8 +305,6 @@ const ProductsAddModal = (props) => {
     List_allItems();
     // eslint-disable-next-line
   }, []);
-
-  console.log("values", values);
 
   return (
     <div className="card m-2 p-2">
@@ -372,6 +364,7 @@ const ProductsAddModal = (props) => {
                       : null
                   }
                   onChange={(val) => {
+                    // console.log("parent_category_id",val)
                     setFieldValue("parent_category_id", val?.value);
                     setFieldValue("category_id", "");
                   }}
@@ -464,7 +457,6 @@ const ProductsAddModal = (props) => {
                       setFieldValue("color_id", 0);
                     }
                   }}
-                  onInputChange={(val) => console.log(val)}
                   options={colorOptions}
                 />
                 <Error field="color_id" />
@@ -582,7 +574,7 @@ const ProductsAddModal = (props) => {
             </div>
             {values.brands !== undefined &&
               values.brands.map((s, k) => (
-                <div className="row">
+                <div className="row" key={k}>
                   <div className="col-md-3 mb-3">
                     <div>
                       <label>
@@ -629,17 +621,29 @@ const ProductsAddModal = (props) => {
                         accept="image/png, image/gif, image/jpeg"
                         onBlur={handleBlur}
                         onChange={(e) => {
-                          onBrandImageChange(e, k);
-                          setBrandImgArr([...brandimagArr, e.target.files[0]]);
-                          setFieldValue(
-                            `brands[${k}].brandimg`,
-                            e.target.files[0]?.name
-                          );
-                        }}
+                          if(e.target.files[0]){                          
+                            onBrandImageChange(e, k);
+                            setBrandImgArr([...brandimagArr, e.target.files[0]]);
+                            setFieldValue(
+                              `brands[${k}].brandimg`,
+                              e.target.files[0]?.name
+                            );
+                           
+                          }
+                          else{
+                            setFieldValue(`brands[${k}].brandimg`, "")
+                            brandimagArr[k] = ""
+                            setBrandImgArr([...brandimagArr]);
+                          }
+                        }
+                          }
                       />
 
                       <>
-                        {brandImg[k] ? (
+                        {values.brands[k].brandimg!=="" && brandImg[k]? 
+                      
+                        (
+                            
                           <a
                             href={brandImg[k]}
                             alt={"product_image"}
@@ -649,6 +653,7 @@ const ProductsAddModal = (props) => {
                           >
                             <img src={brandImg[k]} alt="product-img" />
                           </a>
+                            
                         ) : (
                           <>
                             <a
@@ -702,7 +707,6 @@ const ProductsAddModal = (props) => {
                         type="button"
                         disabled={values.brands.length <= 1}
                         onClick={() => {
-                          console.log("values", values, id);
                           if (id) {
                             values.deleted_brands.push(values.brands[k].id);
                           }
@@ -741,9 +745,15 @@ const ProductsAddModal = (props) => {
                 accept="image/png, image/gif, image/jpeg"
                 onBlur={handleBlur}
                 onChange={(e) => {
-                  onProductImageChange(e);
-                  setProductImage(e.target.files[0]);
-                  setFieldValue("product_image", e.target.files[0]?.name);
+                  if(e.target.files[0]){
+                    onProductImageChange(e);
+                    setProductImage(e.target.files[0]);
+                    setFieldValue("product_image", e.target.files[0]?.name);
+                  }
+                  else{                  
+                    setProductImage()
+                    setFieldValue("product_image", "");                 
+                  }
                 }}
               />
               {productImage ? (

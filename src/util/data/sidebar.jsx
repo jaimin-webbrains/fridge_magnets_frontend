@@ -9,7 +9,7 @@ export const sidebarData = [
     iconClass: "fab fa-wpforms",
     child: [
       {
-        listname: "Products",
+        listname: "Add Products",
         routepath: "/Products",
         shortname: "PR",
       },

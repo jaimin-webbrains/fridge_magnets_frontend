@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse, CardBody, Card } from "reactstrap";
 import NavSecondChild from "components/sidebar/NavSecondChild";
-import IntlMessages from "util/intlMessages";
+// import IntlMessages from "util/intlMessages";
 import classNames from "classnames";
 
 const NavList = props => {
@@ -178,7 +178,9 @@ const NavList = props => {
         <NavLink to={list.routepath} className="nav-link main-list">
           <i className={list.iconClass} />
           <p style={listNameStyle}>
-            {<IntlMessages id={list.name} />}
+            {/* {<IntlMessages id={list.name} />} */}
+            {list.name}
+
             {list.hasOwnProperty("isNew") && list["isNew"] && (
               <span className="new-update-tag fs-13 bold-text">New</span>
             )}

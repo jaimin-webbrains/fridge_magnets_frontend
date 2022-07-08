@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import classNames from 'classnames'
-import IntlMessages from "util/intlMessages";
+// import IntlMessages from "util/intlMessages";
 
 const NavMenu = props => {
     const { data, index, location } = props
@@ -96,7 +96,8 @@ const NavMenu = props => {
                                                                             to={e.routepath}
                                                                             className="hor_nav-link"
                                                                         >
-                                                                            <IntlMessages id={e.name} />
+                                                                            {/* <IntlMessages id={e.name} /> */}
+                                                                            {e.name}
                                                                         </NavLink>
                                                                     </div>
                                                                 )

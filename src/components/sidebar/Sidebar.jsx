@@ -3,10 +3,11 @@ import SidebarWrapper from "./sidebar.style";
 import Radium from "radium";
 import NavList from "components/sidebar/NavList";
 import { sidebarData } from "util/data/sidebar";
-import { iconDemo, AppName } from "helper/constant";
+// import {  iconDemo } from "helper/constant";
+import {  AppName } from "helper/constant";
 import { Scrollbars } from "react-custom-scrollbars";
 import { NavLink } from "react-router-dom";
-import IntlMessages from "util/intlMessages";
+// import IntlMessages from "util/intlMessages";
 
 const Sidebar = props => {
   let listNameStyle;
@@ -158,7 +159,8 @@ const Sidebar = props => {
                         <div className="sidelist-header-name">
                           {
                             <Fragment>
-                              <IntlMessages id={list.name} />
+                              {/* <IntlMessages id={list.name} /> */}
+                              {list.name}
                               {list.hasOwnProperty("isNew") && list["isNew"] && (
                                 <span
                                   style={{

@@ -193,16 +193,19 @@ const Settings = (props) => {
                       const [file] = e.target.files;
                       setImage(URL.createObjectURL(file));
                       setFieldValue("logo", e.target.files[0]);
-                    }}
+                    }}  
                     // value={values?.logo}
                   />
-                  {typeof values.logo !== "string" ? (
+                  
+                  {values?.logo !== "" && values?.logo !== "null" ?
+                  typeof values.logo !== "string" ? (
+                    
                     <span className='m-2'>
                       <a
                         href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
                       >
+                       {/*  eslint-disable-next-line */}
                         <img
-                          // src={URL.createObjectURL(values.logo.name)}
                           src={image}
                           style={{
                             width: "60px",
@@ -231,7 +234,9 @@ const Settings = (props) => {
                         ></img>
                       </a>
                     </span>
-                  )}
+                  ):
+                  <></>
+                  }
                   <Error field='logo' />
                 </div>
               </div>
