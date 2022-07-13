@@ -196,10 +196,10 @@ const Settings = (props) => {
                     }}
                     // value={values?.logo}
                   />
-                  {typeof values.logo !== "string" ? (
+                  {typeof values?.logo !== "string" ? (
                     <span className='m-2'>
                       <a
-                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
+                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
                       >
                         <img
                           // src={URL.createObjectURL(values.logo.name)}
@@ -217,10 +217,10 @@ const Settings = (props) => {
                   ) : (
                     <span className='m-2'>
                       <a
-                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
+                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
                       >
                         <img
-                          src={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
+                          src={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
                           style={{
                             width: "60px",
                             height: "60px",
