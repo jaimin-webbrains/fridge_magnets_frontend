@@ -26,6 +26,7 @@ import { getPapers } from "services/paperServices";
 import { getSizes } from "services/sizeServices";
 import { getMarkers } from "services/markerServices";
 import "../../../assets/css/thumbnail.css";
+import ReactSelect from "react-select";
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
@@ -243,6 +244,7 @@ const ProductsAddModal = (props) => {
     handleSubmit();
     var formData = new FormData();
     for (const val in values) {
+     
       if (val === "deleted_brands") {
         formData.append(val, JSON.stringify(values[val]));
       } else if (val === "brands") {
@@ -301,10 +303,12 @@ const ProductsAddModal = (props) => {
     // eslint-disable-next-line
   }, [values.parent_category_id]);
 
-  useEffect(() => {
+   useEffect(() => {
     List_allItems();
     // eslint-disable-next-line
   }, []);
+
+  console.log("values",values)
 
   return (
     <div className="card m-2 p-2">
@@ -352,7 +356,7 @@ const ProductsAddModal = (props) => {
                 <label>
                   Parent Category <span className="error-msg">*</span>
                 </label>
-                <CreatableSelect
+                <ReactSelect
                   isClearable
                   value={
                     parentCatOptions.find(
@@ -363,8 +367,8 @@ const ProductsAddModal = (props) => {
                         )
                       : null
                   }
-                  onChange={(val) => {
-                    // console.log("parent_category_id",val)
+                   onChange={(val) => {
+                    console.log("onclear how it wo",val)
                     setFieldValue("parent_category_id", val?.value);
                     setFieldValue("category_id", "");
                   }}
@@ -382,17 +386,34 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
-                    categoryOptions.find((x) => x.value === values.category_id)
+                    values.category_name && values.category_name !== null && values.category_id === 0?{value:values.category_name,label:values.category_name}:
+                     categoryOptions.find((x) => x.value === values.category_id)
                       ? categoryOptions.find(
                           (x) => x.value === values.category_id
                         )
                       : null
+                                  
                   }
-                  onChange={(val) => setFieldValue("category_id", val?.value)}
-                  onInputChange={(val) => console.log(val)}
-                  options={categoryOptions}
+                 
+                  onCreateOption={(val)=>{                  
+                    setFieldValue("category_id",0)
+                    setFieldValue("category_name",val)                   
+                  }}
+                  onChange={(val) => {
+                    if(val){
+                      setFieldValue("category_id", val?.value)
+                    }
+                    else if(val===null){
+                      setFieldValue("category_name",)
+                      setFieldValue("category_id","")
+                    }
+                   }}
+                  options={values.parent_category_id?categoryOptions:null}
                 />
                 <Error field="category_id" />
+                <Error field="category_name" />
+
+
               </div>
             </div>
 
@@ -446,14 +467,25 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
+                    //&&  values.color_name !== null
+                    values.color_name  && values.color_id === 0 ? {value:values.color_name,label:values.color_name}:
                     colorOptions.find((x) => x.value === values.color_id)
                       ? colorOptions.find((x) => x.value === values.color_id)
                       : null
                   }
+                  onCreateOption={(val)=>{
+                    setFieldValue("color_name",val)
+                    setFieldValue("color_id",0)                   
+                  }}
                   onChange={(val) => {
                     if (val) {
                       setFieldValue("color_id", val?.value);
-                    } else {
+                    }
+                     else if(val===null){
+                    setFieldValue("color_name",)
+                    setFieldValue("color_id",0)
+                  }
+                     else {
                       setFieldValue("color_id", 0);
                     }
                   }}
@@ -471,18 +503,30 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
+                    //&&  values.size_val !== null
+                    values.size_val  && values.size_id === 0?{value:values.size_val,label:values.size_val}:
                     sizeOptions.find((x) => x.value === values.size_id)
                       ? sizeOptions.find((x) => x.value === values.size_id)
                       : null
                   }
+                  onCreateOption={(val)=>{
+                    setFieldValue("size_val",val)  
+                    setFieldValue("size_id",0)                 
+                  }}
+                 
                   onChange={(val) => 
                    { if (val) {
                     setFieldValue("size_id", val?.value)
-                    } else {
-                      setFieldValue("size_id", 0);
-                    }}
                     }
-                  onInputChange={(val) => console.log(val)}
+                    else if(val===null){
+                      setFieldValue("size_val",)
+                      setFieldValue("size_id",0)
+                    }
+                     else {
+                      setFieldValue("size_id", 0);
+                    }
+                  }
+                    }
                   options={sizeOptions}
                 />
                 <Error field="size_id" />
@@ -497,20 +541,31 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
+                    // &&  values.paper_type !== null
+                    values.paper_type && values.paper_type_id === 0?{value:values.paper_type,label:values.paper_type}:
                     paperOptions.find((x) => x.value === values.paper_type_id)
                       ? paperOptions.find(
                           (x) => x.value === values.paper_type_id
                         )
                       : null
                   }
+                  onCreateOption={(val)=>{
+                    setFieldValue("paper_type",val)  
+                    setFieldValue("paper_type_id",0)                 
+                  }}
                   onChange={(val) =>
                     { if (val) {
                       setFieldValue("paper_type_id", val?.value)
-                      } else {
+                      }
+                      else if(val===null){
+                        setFieldValue("paper_type",)
+                        setFieldValue("paper_type_id",0)
+                      }
+                       else {
                         setFieldValue("paper_type_id", 0);
-                      }}
+                      }
+                    }
                      }
-                  onInputChange={(val) => console.log(val)}
                   options={paperOptions}
                 />
                 <Error field="paper_type_id" />
@@ -525,16 +580,28 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
+                    //&& values.marker_val !== null
+                    values.marker_val  && values.marker_id === 0?{value:values.marker_val,label:values.marker_val}:
                     markerOptions.find((x) => x.value === values.marker_id)
                       ? markerOptions.find((x) => x.value === values.marker_id)
                       : null
                   }
+                  onCreateOption={(val)=>{
+                    setFieldValue("marker_val",val)  
+                    setFieldValue("marker_id", 0);                 
+                  }}
                   onChange={(val) =>
                     { if (val) {
                       setFieldValue("marker_id", val?.value)
-                      } else {
+                      }
+                      else if(val===null){
+                        setFieldValue("marker_val",)
+                        setFieldValue("marker_id",0)
+                      }
+                       else {
                         setFieldValue("marker_id", 0);
-                      }}
+                      }
+                    }
                     }
                   onInputChange={(val) => console.log(val)}
                   options={markerOptions}
@@ -582,7 +649,7 @@ const ProductsAddModal = (props) => {
                         <span className="error-msg ml-1">*</span>
                       </label>
                     </div>
-                    <CreatableSelect
+                    <ReactSelect
                       isClearable
                       value={
                         brandOptions.find(
@@ -627,23 +694,20 @@ const ProductsAddModal = (props) => {
                             setFieldValue(
                               `brands[${k}].brandimg`,
                               e.target.files[0]?.name
-                            );
-                           
+                            )                           
                           }
                           else{
                             setFieldValue(`brands[${k}].brandimg`, "")
                             brandimagArr[k] = ""
                             setBrandImgArr([...brandimagArr]);
                           }
-                        }
-                          }
+                        }}
                       />
 
                       <>
                         {values.brands[k].brandimg!=="" && brandImg[k]? 
                       
-                        (
-                            
+                        (                            
                           <a
                             href={brandImg[k]}
                             alt={"product_image"}

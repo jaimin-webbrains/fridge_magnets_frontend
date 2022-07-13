@@ -9,23 +9,23 @@ import ReactTableWrapper from "components/reacttable/reacttbl.style";
 import classNames from "classnames";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import Pagination from "components/common/Pagination";
-import { deleteCategory, getCategories } from "services/categoryServices";
+import { deleteNews, getNews } from "services/newsServices";
 import ConformationModal from "components/common/ConformationModal";
 import { Edit3, Plus, Trash } from "react-feather";
-import CategoriesAddModal from "./categoriesAddModal";
+import NewsAddModal from "./newsAddModal";
 
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
 
-const Categories = props => {
+const News = props => {
   const { token, success, error, fetching } = props;
   const [isOpen, setOpenModal] = useState();
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditData] = useState({});
   const [refresh, toggleRefresh] = useState(true);
-  const [categorysList, setCategoriesList] = useState([]);
+  const [newsList, setNewsList] = useState([]);
   const [openDeleteModal, toggleDeleteModalOpen] = useState();
   const [deleteId, setDeleteID] = useState("");
 
@@ -37,21 +37,21 @@ const Categories = props => {
     };
     return <div className={classNames(classes)}>{props.title}</div>;
   };
-  const getCategoriesList = useCallback(async () => {
+  const getNewsList = useCallback(async () => {
     fetching();
-    await getCategories(token).then(data => {
-      if (data?.success) {
-        setCategoriesList(data.data);
+    await getNews(token).then(data => {
+      if (data.success) {
+        setNewsList(data.data);
         success();
         toggleRefresh(false);
       } else {
-        error(data?.message);
+        error(data.message);
       }
     });
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    refresh && getCategoriesList();
+    refresh && getNewsList();
     // eslint-disable-next-line
   }, [refresh]);
   const columns = useMemo(
@@ -61,60 +61,22 @@ const Categories = props => {
           return (
             <HeaderComponent
               isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Category Name"
+              title="News Title"
             />
           );
         },
         // Filter: FilterComponent,
-        placeholder: "Category Name",
+        placeholder: "News",
         disableFilters: true,
-        accessor: "name",
+        accessor: "news",
         Cell: tableInstance => (
           <span className="text-capitalize">
-            {tableInstance.row.values.name}
-          </span>
-        )
-      },
-      {
-        Header: tableInstance => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Parent Category"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Category Name",
-        disableFilters: true,
-        accessor: "parent_category_name",
-        Cell: tableInstance => (
-          
-          <span className="text-capitalize">
-            {tableInstance.value}
+            {tableInstance.row.values.news}
           </span>
         )
       },
      
-      {
-        Header: tableInstance => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Description"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Description",
-        disableFilters: true,
-        accessor: "description",
-        Cell: tableInstance => (
-          <span className="text-capitalize">
-            {tableInstance.row.values.description}
-          </span>
-        )
-      },
+      
       {
         Header: tableInstance => {
           return (
@@ -156,7 +118,7 @@ const Categories = props => {
       }
     ],
     // eslint-disable-next-line
-    [getCategoriesList]
+    [getNewsList]
   );
   const {
     getTableProps,
@@ -169,7 +131,7 @@ const Categories = props => {
     state: { pageIndex }
   } = useTable(
     {
-      data: categorysList,
+      data: newsList,
       columns: columns,
       initialState: {
         pageSize: 10,
@@ -182,7 +144,7 @@ const Categories = props => {
   );
   const deleteClick = () => {
     
-    deleteCategory(token, { id: deleteId }).then(res => {
+    deleteNews(token, { id: deleteId }).then(res => {
       if (res.success) {
         toggleRefresh(true);
         toggleDeleteModalOpen(false);
@@ -193,13 +155,13 @@ const Categories = props => {
     });
   };
   return (
-    <div className="card">
+    <div className="card m-2 p-2">
     <div className="container-fluid">
       <div className="row title-sec align-items-center">
-        <div className="col-sm headline">Categories</div>
+        <div className="col-sm headline">News</div>
         <div className="col-sm-auto ml-auto">
           <button className="btn btn-blue" onClick={() => setOpenModal(true)}>
-            <Plus className="mr-2" /> Add Category
+            <Plus className="mr-2" /> Add News
           </button>
         </div>
       </div>
@@ -267,7 +229,7 @@ const Categories = props => {
       </div>
       <Modal isOpen={isOpen} backdrop={true}>
         {isOpen && (
-          <CategoriesAddModal
+          <NewsAddModal
             onClose={() => {
               setOpenModal(false);
               setIsEdit(false);
@@ -285,7 +247,7 @@ const Categories = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete category ?"}
+          message={"Are you sure to delete news ?"}
           handleConfirm={() => deleteClick()}
         />
       )}
@@ -305,4 +267,4 @@ const mapStateToProps = state => {
 export default compose(
   withRouter,
   connect(mapStateToProps, { success, error, fetching, setuser })
-)(Categories);
+)(News);

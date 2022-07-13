@@ -67,6 +67,7 @@ const Settings = (props) => {
       return <span />;
     }
   };
+  console.log("values",values)
   const handlesettingSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();

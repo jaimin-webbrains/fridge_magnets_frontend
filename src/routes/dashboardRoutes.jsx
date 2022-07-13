@@ -7,8 +7,11 @@ import categories from "views/pages/Categories/categories";
 import categoriesAddModal from "views/pages/Categories/categoriesAddModal";
 import colors from "views/pages/Colors/colors";
 import colorsAddModal from "views/pages/Colors/colorsAddModal";
+import inquiries from "views/pages/Inquiry/inquiries";
 import markers from "views/pages/Markers/markers";
 import markersAddModal from "views/pages/Markers/markersAddModal";
+import news from "views/pages/news/news";
+import newsAddModal from "views/pages/news/newsAddModal";
 import papers from "views/pages/Papers/papers";
 import papersAddModal from "views/pages/Papers/papersAddModal";
 import settings from "views/pages/Settings/settings";
@@ -35,11 +38,16 @@ const dashboardRoutes = [
   { path: "/markers", component: markers },
   { path: "/markers/add", component: markersAddModal },
 
+  { path: "/news", component: news },
+  { path: "/news/add", component: newsAddModal },
+
   { path: "/Products", component: products },
   { path: "/Products/add", component: productsAddForm },
   { path: "/Products/edit/:id", component: productsAddForm },
 
   { path: "/Settings", component: settings },
+
+  { path: "/Inquiry", component: inquiries },
 ];
 
 export default dashboardRoutes;

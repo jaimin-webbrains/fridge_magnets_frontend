@@ -42,6 +42,7 @@ export const sidebarData = [
             routepath: "/Sizes",
             shortname: "SZ",
           },
+         
           {
             listname: "Markers",
             routepath: "/Markers",
@@ -55,6 +56,16 @@ export const sidebarData = [
     name: "Settings",
     routepath: "/Settings",
     iconClass: "fa fa-cog",
+  },
+  {
+    name: "News",
+    routepath: "/News",
+    iconClass: "far fa-newspaper",
+  },
+  {
+    name: "Inquiry",
+    routepath: "/Inquiry",
+    iconClass: "far fa-newspaper",
   },
 ];
 
