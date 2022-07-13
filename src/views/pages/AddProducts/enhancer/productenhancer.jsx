@@ -9,7 +9,15 @@ const formikEnhancer = withFormik({
 
     parent_category_id: Yup.string().required("Please Select Parent Category"),
     category_id: Yup.string().required("Please Select Category"),
-    brands: Yup.array().of(
+    category_name:Yup.string()
+    .when("category_id", {
+      is: value => (parseInt(value) === 0? true : false),
+      then: Yup.string()
+      .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please Enter Valid Category Name"),
+      otherwise: Yup.string(),
+    }),
+    
+     brands: Yup.array().of(
       Yup.object().shape({
         brand_id: Yup.string().required("Please enter Brand name"),
         brandimg: Yup.string().required("Please Select Image"),
@@ -35,7 +43,11 @@ const formikEnhancer = withFormik({
     brands: [{ position: 1, brand_id: "", brandimg: "", show_on_homepage: 0 }],
     deleted_brands: [],
     product_quantity:"",
-    SKU:""
+    SKU:"",
+    category_name:"",
+    paper_type:"",
+    size_val:"",
+    marker_val:""
   }),
   handleSubmit: (values) => {},
   displayName: "CustomValidationForm",

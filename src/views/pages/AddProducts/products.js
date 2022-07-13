@@ -9,9 +9,12 @@ import ReactTableWrapper from "components/reacttable/reacttbl.style";
 import classNames from "classnames";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import Pagination from "components/common/Pagination";
-import { deleteProduct, getProducts } from "services/productServices";
+import { deleteProduct, getProductsTable } from "services/productServices";
 import ConformationModal from "components/common/ConformationModal";
 import { Edit3, Plus, Trash } from "react-feather";
+import ImportProductsmodal from "./importProductsmodal";
+import "../../../assets/css/products.css"
+import "../../../assets/css/thumbnail.css"
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
@@ -25,6 +28,10 @@ const Products = (props) => {
   const [productsList, setProductsList] = useState([]);
   const [openDeleteModal, toggleDeleteModalOpen] = useState();
   const [deleteId, setDeleteID] = useState("");
+  const [isOpen, setOpenModal] = useState();
+  const [isEdit, setIsEdit] = useState(false);
+  const [editData, setEditData] = useState({});
+
 
   const HeaderComponent = (props) => {
     let classes = {
@@ -33,23 +40,27 @@ const Products = (props) => {
     };
     return <div className={classNames(classes)}>{props.title}</div>;
   };
+  
   const getProductsList = useCallback(async () => {
     fetching();
-    await getProducts(token).then((data) => {
-      if (data.success) {
+    await getProductsTable(token).then((data) => {
+      if (data?.success) {
         setProductsList(data.data);
         success();
         toggleRefresh(false);
       } else {
-        error(data.message);
+        error(data?.message);
       }
     });
+   
     // eslint-disable-next-line
   }, []);
   useEffect(() => {
     refresh && getProductsList();
     // eslint-disable-next-line
   }, [refresh]);
+
+  
   const columns = useMemo(
     () => [
       {
@@ -62,7 +73,7 @@ const Products = (props) => {
           );
         },
         // Filter: FilterComponent,
-        placeholder: "Product Name",
+        placeholder: "Product Image",
         disableFilters: true,
         accessor: "product_name",
         Cell: (tableInstance) => (
@@ -71,6 +82,144 @@ const Products = (props) => {
           </span>
         ),
       },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Product Image"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Product Image",
+        disableFilters: true,
+        accessor: "product_image",
+        Cell: (tableInstance) => (
+          <div className="thumbnail_img">
+        {/* eslint-disable-next-line */}         
+          <img src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.values.product_image}`}  alt ="Image Not Found"></img> 
+          </div>
+        
+        ),
+      },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Category Name"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Category Name",
+        disableFilters: true,
+        accessor: "category_id",
+        Cell: (tableInstance) => (
+          <div>
+             <span className="text-capitalize">
+            {tableInstance.row.original?.category_name && tableInstance.row.original?.category_name !== null?tableInstance.row.original?.category_name:tableInstance.row.original?.parent_category_name}
+          </span>
+    
+          {/* {console.log(tableInstance.row)}  */}
+          </div>
+        
+        ),
+      },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Color"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Color",
+        disableFilters: true,
+        accessor: "color",
+        Cell: (tableInstance) => (
+          <div>
+             <span className="text-capitalize">
+            {tableInstance.row.original.color}
+          {/* {console.log(tableInstance.row)}  */}
+          </span>    
+          </div>
+        
+        ),
+      },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Size"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Size",
+        disableFilters: true,
+        accessor: "size",
+        Cell: (tableInstance) => (
+          <div>
+             <span className="text-capitalize">
+            {tableInstance.row.original.size}
+          {/* {console.log(tableInstance.row)}  */}
+          </span>    
+          </div>
+        
+        ),
+      },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Paper"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Paper",
+        disableFilters: true,
+        accessor: "paper",
+        Cell: (tableInstance) => (
+          <div>
+             <span className="text-capitalize">
+            {tableInstance.row.original.paper}
+          {/* {console.log(tableInstance.row)}  */}
+          </span>    
+          </div>
+        
+        ),
+      },
+      {
+        Header: (tableInstance) => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Marker"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Marker",
+        disableFilters: true,
+        accessor: "marker",
+        Cell: (tableInstance) => (
+          <div>
+             <span className="text-capitalize">
+            {tableInstance.row.original.marker}
+          {/* {console.log(tableInstance.row)}  */}
+          </span>    
+          </div>
+        
+        ),
+      },
+
 
       {
         Header: (tableInstance) => {
@@ -89,10 +238,7 @@ const Products = (props) => {
             <div className="react-action-class">
               <button
                 className="table-action action-edit"
-                onClick={() => {
-                  // setEditData(tableInstance.row.original);
-                  // setIsEdit(true);
-                  // setOpenModal(true);
+                onClick={() => {                  
                   props.history.push(
                     `/products/Edit/${tableInstance.row.original.id}`
                   );
@@ -104,10 +250,6 @@ const Products = (props) => {
                 className="table-action action-delete"
                 onClick={() => {
                   toggleDeleteModalOpen(true);
-                  console.log(
-                    tableInstance.row.original,
-                    "tableInstance.row.original"
-                  );
                   setDeleteID(tableInstance.row.original.id);
                 }}
               >
@@ -160,12 +302,23 @@ const Products = (props) => {
       <div className="row title-sec align-items-center">
         <div className="col-sm headline">Products</div>
         <div className="col-sm-auto ml-auto">
+
+        {/* <button
+            className="btn btn-blue"
+            onClick={() => {
+                  // setEditData(tableInstance.row.original);
+                  setIsEdit(true);
+                  setOpenModal(true);             
+            }}
+          >
+           <span><Plus className="mr-2" /> Import  </span>            
+          </button> */}
           <button
             className="btn btn-blue"
             onClick={() => {
               props.history.push("/Products/Add");
             }}
-          >
+          >            
             <Plus className="mr-2" /> Add Product
           </button>
         </div>
@@ -231,6 +384,20 @@ const Products = (props) => {
           />
         </ReactTableWrapper>
       </div>
+      <Modal style={{maxWidth:"400px"}}isOpen={isOpen} backdrop={true}>
+        {isOpen && (
+          <ImportProductsmodal
+            onClose={() => {
+              setOpenModal(false);
+              setIsEdit(false);
+              setEditData({});
+            }}
+            isEdit={isEdit}
+            editData={editData}
+            toggleRefresh={e => toggleRefresh(e)}
+          />
+        )}
+      </Modal>
 
       <Modal isOpen={openDeleteModal} backdrop={true}>
         {openDeleteModal && (

@@ -5,6 +5,13 @@ export const getProducts = token =>
     .get("/products/list")
     .then(handleResponse)
     .catch(handleError);
+    
+
+export const getProductsTable = token =>
+  api(token)
+    .get("/productsTable/list")
+    .then(handleResponse)
+    .catch(handleError);
 
 export const getProductById = (token, data) =>
   api(token)
@@ -29,3 +36,9 @@ export const deleteProduct = (token, data) =>
     .delete("/products/delete", { data: data })
     .then(handleResponse)
     .catch(handleError);
+
+export const importFiles = (token, data) =>
+    api(token)
+      .post("/products/importfile", data)
+      .then(handleResponse)
+      .catch(handleError);

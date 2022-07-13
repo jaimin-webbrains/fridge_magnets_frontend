@@ -1,0 +1,19 @@
+.import_btn{
+    display: flex;
+    justify-content: end;
+}
+.cancel_btn{
+    margin-right: "12px";
+}
+.cancle_margin{
+    margin-right: "12px";
+}
+
+.product_img {
+    width: "100px"!important;
+    height: "100px" !important;
+    object-fit: cover !important;
+}
+.product_img img{
+    width:100% !important;
+}
