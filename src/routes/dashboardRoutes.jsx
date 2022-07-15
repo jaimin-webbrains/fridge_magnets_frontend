@@ -4,9 +4,11 @@ import productsAddForm from "views/pages/AddProducts/productsAddForm";
 import brands from "views/pages/brands/brands";
 import brandsAddModal from "views/pages/brands/brandsAddModal";
 import categories from "views/pages/Categories/categories";
-import categoriesAddModal from "views/pages/Categories/categoriesAddModal";
+import categoriesAddForm from "views/pages/Categories/categoriesAddForm";
+// import categoriesAddModal from "views/pages/Categories/categoriesAddModal";
 import colors from "views/pages/Colors/colors";
 import colorsAddModal from "views/pages/Colors/colorsAddModal";
+import gallery from "views/pages/Gallery/gallery";
 import inquiries from "views/pages/Inquiry/inquiries";
 import markers from "views/pages/Markers/markers";
 import markersAddModal from "views/pages/Markers/markersAddModal";
@@ -21,7 +23,9 @@ import sizesAddModal from "views/pages/Sizes/sizesAddModal";
 const dashboardRoutes = [
   { path: "/intro", component: Intro },
   { path: "/categories", component: categories },
-  { path: "/categories/add", component: categoriesAddModal },
+  { path: "/categories/add", component: categoriesAddForm },
+  { path: "/categories/edit/:id", component: categoriesAddForm },
+
 
   { path: "/brands", component: brands },
   { path: "/brands/add", component: brandsAddModal },
@@ -40,6 +44,8 @@ const dashboardRoutes = [
 
   { path: "/news", component: news },
   { path: "/news/add", component: newsAddModal },
+
+  { path: "/gallerys", component: gallery },
 
   { path: "/Products", component: products },
   { path: "/Products/add", component: productsAddForm },

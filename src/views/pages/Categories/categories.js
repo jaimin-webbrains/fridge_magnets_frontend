@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+// import enhancer from "enhancer/categoryenhancer"
 import NavigationActions from "redux/navigation/actions";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -12,7 +13,7 @@ import Pagination from "components/common/Pagination";
 import { deleteCategory, getCategories } from "services/categoryServices";
 import ConformationModal from "components/common/ConformationModal";
 import { Edit3, Plus, Trash } from "react-feather";
-import CategoriesAddModal from "./categoriesAddModal";
+// import CategoriesAddModal from "./categoriesAddModal";
 
 
 const { success, error, fetching } = NavigationActions;
@@ -21,9 +22,9 @@ const { setuser } = AuthActions;
 
 const Categories = props => {
   const { token, success, error, fetching } = props;
-  const [isOpen, setOpenModal] = useState();
-  const [isEdit, setIsEdit] = useState(false);
-  const [editData, setEditData] = useState({});
+  // const [isOpen, setOpenModal] = useState();
+  // const [isEdit, setIsEdit] = useState(false);
+  // const [editData, setEditData] = useState({});
   const [refresh, toggleRefresh] = useState(true);
   const [categorysList, setCategoriesList] = useState([]);
   const [openDeleteModal, toggleDeleteModalOpen] = useState();
@@ -37,6 +38,7 @@ const Categories = props => {
     };
     return <div className={classNames(classes)}>{props.title}</div>;
   };
+
   const getCategoriesList = useCallback(async () => {
     fetching();
     await getCategories(token).then(data => {
@@ -50,10 +52,13 @@ const Categories = props => {
     });
     // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
     refresh && getCategoriesList();
     // eslint-disable-next-line
   }, [refresh]);
+
+
   const columns = useMemo(
     () => [
       {
@@ -111,7 +116,12 @@ const Categories = props => {
         accessor: "description",
         Cell: tableInstance => (
           <span className="text-capitalize">
-            {tableInstance.row.values.description}
+            <div
+          dangerouslySetInnerHTML={{
+            __html: tableInstance.row.values.description
+          }}
+          className="notes-text"
+        />            
           </span>
         )
       },
@@ -133,9 +143,12 @@ const Categories = props => {
               <button
                 className="table-action action-edit"
                 onClick={() => {
-                  setEditData(tableInstance.row.original);
-                  setIsEdit(true);
-                  setOpenModal(true);
+                  props.history.push(
+                    `/Categories/Edit/${tableInstance.row.original.id}`
+                  );
+                  // setEditData(tableInstance.row.original);
+                  // setIsEdit(true);
+                  // setOpenModal(true);
                 }}
               >
                 <Edit3 className="table-icon-edit" />
@@ -144,7 +157,7 @@ const Categories = props => {
                 className="table-action action-delete"
                 onClick={() => {
                   toggleDeleteModalOpen(true);
-                  console.log(tableInstance.row.original,"tableInstance.row.original")
+                  // console.log(tableInstance.row.original,"tableInstance.row.original")
                   setDeleteID(tableInstance.row.original.id);
                 }}
               >
@@ -198,7 +211,8 @@ const Categories = props => {
       <div className="row title-sec align-items-center">
         <div className="col-sm headline">Categories</div>
         <div className="col-sm-auto ml-auto">
-          <button className="btn btn-blue" onClick={() => setOpenModal(true)}>
+          <button className="btn btn-blue" onClick={() => props.history.push("/Categories/Add")}>
+
             <Plus className="mr-2" /> Add Category
           </button>
         </div>
@@ -265,7 +279,7 @@ const Categories = props => {
           />
         </ReactTableWrapper>
       </div>
-      <Modal isOpen={isOpen} backdrop={true}>
+      {/* <Modal isOpen={isOpen} backdrop={true}>
         {isOpen && (
           <CategoriesAddModal
             onClose={() => {
@@ -278,7 +292,7 @@ const Categories = props => {
             toggleRefresh={e => toggleRefresh(e)}
           />
         )}
-      </Modal>
+      </Modal> */}
       <Modal isOpen={openDeleteModal} backdrop={true}>
       {openDeleteModal && (
         <ConformationModal
@@ -304,5 +318,6 @@ const mapStateToProps = state => {
 };
 export default compose(
   withRouter,
+  // enhancer,
   connect(mapStateToProps, { success, error, fetching, setuser })
 )(Categories);

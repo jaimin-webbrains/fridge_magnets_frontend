@@ -21,7 +21,7 @@ const Login = props => {
             };
             // using this method you can store token in redux
             props.login(data);
-            props.history.push("/intro");
+            props.history.push("/Products");
         }
         handleSubmit();
     };
