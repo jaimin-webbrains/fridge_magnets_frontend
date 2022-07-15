@@ -75,6 +75,26 @@ const News = props => {
           </span>
         )
       },
+      {
+        Header: tableInstance => {
+          return (
+            <HeaderComponent
+              isSortedDesc={tableInstance.column.isSortedDesc}
+              title="Description"
+            />
+          );
+        },
+        // Filter: FilterComponent,
+        placeholder: "Description",
+        disableFilters: true,
+        accessor: "description",
+        Cell: tableInstance => (
+          <span className="text-capitalize">
+            {/* {console.log(tableInstance.row.original.news_description)} */}
+            {tableInstance.row.original.news_description}
+          </span>
+        )
+      },
      
       
       {

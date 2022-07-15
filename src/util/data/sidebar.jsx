@@ -63,9 +63,15 @@ export const sidebarData = [
     iconClass: "far fa-newspaper",
   },
   {
+    name: "Gallery",
+    routepath: "/Gallerys",
+    iconClass: "far fa-images",
+  },
+
+  {
     name: "Inquiry",
     routepath: "/Inquiry",
-    iconClass: "far fa-newspaper",
+    iconClass: "far fa-clipboard",
   },
 ];
 

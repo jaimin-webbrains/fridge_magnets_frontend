@@ -9,78 +9,76 @@ import ReactTableWrapper from "components/reacttable/reacttbl.style";
 import classNames from "classnames";
 import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import Pagination from "components/common/Pagination";
-import { deleteProduct, getProductsTable } from "services/productServices";
+import { deleteGallery, getGallerys } from "services/galleryServices";
 import ConformationModal from "components/common/ConformationModal";
 import { Edit3, Plus, Trash } from "react-feather";
-import ImportProductsmodal from "./importProductsmodal";
-import "../../../assets/css/products.css"
-import "../../../assets/css/thumbnail.css"
+import GallerysAddModal from "./gallerysAddModal";
+import { getCategories } from "services/categoryServices";
+
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
-const Products = (props) => {
+
+const Gallerys = props => {
   const { token, success, error, fetching } = props;
-  // const [isOpen, setOpenModal] = useState();
-  // const [isEdit, setIsEdit] = useState(false);
-  // const [editData, setEditData] = useState({});
-  const [refresh, toggleRefresh] = useState(true);
-  const [productsList, setProductsList] = useState([]);
-  const [openDeleteModal, toggleDeleteModalOpen] = useState();
-  const [deleteId, setDeleteID] = useState("");
   const [isOpen, setOpenModal] = useState();
   const [isEdit, setIsEdit] = useState(false);
   const [editData, setEditData] = useState({});
+  const [refresh, toggleRefresh] = useState(true);
+  const [gallerysList, setGallerysList] = useState([]);
+  const [openDeleteModal, toggleDeleteModalOpen] = useState();
+  const [deleteId, setDeleteID] = useState("");
 
 
-  const HeaderComponent = (props) => {
+  const HeaderComponent = props => {
     let classes = {
       "-sort-asc": props.isSortedDesc !== undefined && !props.isSortedDesc,
-      "-sort-desc": props.isSortedDesc !== undefined && props.isSortedDesc,
+      "-sort-desc": props.isSortedDesc !== undefined && props.isSortedDesc
     };
     return <div className={classNames(classes)}>{props.title}</div>;
   };
-  
-  const getProductsList = useCallback(async () => {
+
+   const getGallerysList = useCallback(async () => {
     fetching();
-    await getProductsTable(token).then((data) => {
-      if (data?.success) {
-        setProductsList(data.data);
+    await getGallerys(token).then(data => {
+      if (data.success) {
+        setGallerysList(data.data);
         success();
         toggleRefresh(false);
       } else {
-        error(data?.message);
+        error(data.message);
       }
     });
-   
+  
     // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
-    refresh && getProductsList();
+    refresh && getGallerysList();
     // eslint-disable-next-line
   }, [refresh]);
-
-  
   const columns = useMemo(
     () => [
       {
-        Header: (tableInstance) => {
+        Header: tableInstance => {
           return (
             <HeaderComponent
               isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Product Name"
+              title="Category Name"
             />
           );
         },
         // Filter: FilterComponent,
-        placeholder: "Product Image",
+        placeholder: "Category Name",
         disableFilters: true,
-        accessor: "product_name",
-        Cell: (tableInstance) => (
+        accessor: "category_id",
+        Cell: tableInstance => (
           <span className="text-capitalize">
-            {tableInstance.row.values.product_name}
+          {tableInstance.row.original.category_name}
+
           </span>
-        ),
+        )
       },
       {
         Header: (tableInstance) => {
@@ -94,134 +92,19 @@ const Products = (props) => {
         // Filter: FilterComponent,
         placeholder: "Product Image",
         disableFilters: true,
-        accessor: "product_image",
+        accessor: "product_images",
         Cell: (tableInstance) => (
           <div className="thumbnail_img">
         {/* eslint-disable-next-line */}         
-          <img src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.values.product_image}`}  alt ="Image Not Found"></img> 
+          <img src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.original.product_Images}`}  alt ="Image Not Found"></img> 
           </div>
         
         ),
       },
+     
+      
       {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Category Name"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Category Name",
-        disableFilters: true,
-        accessor: "category_id",
-        Cell: (tableInstance) => (
-          <div>
-             <span className="text-capitalize">
-            {tableInstance.row.original?.category_name && tableInstance.row.original?.category_name !== null?tableInstance.row.original?.category_name:tableInstance.row.original?.parent_category_name}
-          </span>
-    
-          {/* {console.log(tableInstance.row)}  */}
-          </div>
-        
-        ),
-      },
-      {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Color"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Color",
-        disableFilters: true,
-        accessor: "color",
-        Cell: (tableInstance) => (
-          <div>
-             <span className="text-capitalize">
-            {tableInstance.row.original.color}
-          {/* {console.log(tableInstance.row)}  */}
-          </span>    
-          </div>
-        
-        ),
-      },
-      {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Size"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Size",
-        disableFilters: true,
-        accessor: "size",
-        Cell: (tableInstance) => (
-          <div>
-             <span className="text-capitalize">
-            {tableInstance.row.original.size}
-          {/* {console.log(tableInstance.row)}  */}
-          </span>    
-          </div>
-        
-        ),
-      },
-      {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Paper"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Paper",
-        disableFilters: true,
-        accessor: "paper",
-        Cell: (tableInstance) => (
-          <div>
-             <span className="text-capitalize">
-            {tableInstance.row.original.paper}
-          {/* {console.log(tableInstance.row)}  */}
-          </span>    
-          </div>
-        
-        ),
-      },
-      {
-        Header: (tableInstance) => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Marker"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Marker",
-        disableFilters: true,
-        accessor: "marker",
-        Cell: (tableInstance) => (
-          <div>
-             <span className="text-capitalize">
-            {tableInstance.row.original.marker}
-          </span>    
-          </div>
-        
-        ),
-      },
-
-
-      {
-        Header: (tableInstance) => {
+        Header: tableInstance => {
           return (
             <HeaderComponent
               isSortedDesc={tableInstance.column.isSortedDesc}
@@ -232,19 +115,19 @@ const Products = (props) => {
         accessor: "id",
         disableSortBy: true,
         disableFilters: true,
-        Cell: (tableInstance) => {
+        Cell: tableInstance => {
           return (
             <div className="react-action-class">
-              <button
+              {/* <button
                 className="table-action action-edit"
-                onClick={() => {                  
-                  props.history.push(
-                    `/products/Edit/${tableInstance.row.original.id}`
-                  );
+                onClick={() => {
+                  setEditData(tableInstance.row.original);
+                  setIsEdit(true);
+                  setOpenModal(true);
                 }}
               >
                 <Edit3 className="table-icon-edit" />
-              </button>
+              </button> */}
               <button
                 className="table-action action-delete"
                 onClick={() => {
@@ -256,11 +139,11 @@ const Products = (props) => {
               </button>
             </div>
           );
-        },
-      },
+        }
+      }
     ],
     // eslint-disable-next-line
-    [getProductsList]
+    [getGallerysList]
   );
   const {
     getTableProps,
@@ -270,22 +153,23 @@ const Products = (props) => {
     headerGroups,
     pageCount,
     gotoPage,
-    state: { pageIndex },
+    state: { pageIndex }
   } = useTable(
     {
-      data: productsList,
+      data: gallerysList,
       columns: columns,
       initialState: {
         pageSize: 10,
-        pageIndex: 0,
-      },
+        pageIndex: 0
+      }
     },
     useFilters,
     useSortBy,
     usePagination
   );
   const deleteClick = () => {
-    deleteProduct(token, { id: deleteId }).then((res) => {
+    
+    deleteGallery(token, { id: deleteId }).then(res => {
       if (res.success) {
         toggleRefresh(true);
         toggleDeleteModalOpen(false);
@@ -299,37 +183,22 @@ const Products = (props) => {
     <div className="card m-2 p-2">
     <div className="container-fluid">
       <div className="row title-sec align-items-center">
-        <div className="col-sm headline">Products</div>
+        <div className="col-sm headline">Gallery</div>
         <div className="col-sm-auto ml-auto">
-
-        {/* <button
-            className="btn btn-blue"
-            onClick={() => {
-                  // setEditData(tableInstance.row.original);
-                  setIsEdit(true);
-                  setOpenModal(true);             
-            }}
-          >
-           <span><Plus className="mr-2" /> Import  </span>            
-          </button> */}
-          <button
-            className="btn btn-blue"
-            onClick={() => {
-              props.history.push("/Products/Add");
-            }}
-          >            
-            <Plus className="mr-2" /> Add Product
+          <button className="btn btn-blue" onClick={() => setOpenModal(true)}>
+            <Plus className="mr-2" /> Add Gallery
           </button>
         </div>
       </div>
       <div className="div-container">
         <ReactTableWrapper {...props}>
+
           <div className="table-responsive common-table">
             <table className="table border-0" {...getTableProps()}>
               <thead className="thead-dark">
-                {headerGroups.map((headerGroup) => (
+                {headerGroups.map(headerGroup => (
                   <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map((header) => (
+                    {headerGroup.headers.map(header => (
                       <th
                         {...header.getHeaderProps(
                           header.getSortByToggleProps()
@@ -363,11 +232,11 @@ const Products = (props) => {
                                       })}
                                   </tr>
                               ))} */}
-                {page.map((row) => {
+                {page.map(row => {
                   prepareRow(row);
                   return (
                     <tr {...row.getRowProps()}>
-                      {row.cells.map((cell) => (
+                      {row.cells.map(cell => (
                         <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                       ))}
                     </tr>
@@ -383,9 +252,9 @@ const Products = (props) => {
           />
         </ReactTableWrapper>
       </div>
-      <Modal style={{maxWidth:"400px"}}isOpen={isOpen} backdrop={true}>
+      <Modal isOpen={isOpen} backdrop={true}>
         {isOpen && (
-          <ImportProductsmodal
+          <GallerysAddModal
             onClose={() => {
               setOpenModal(false);
               setIsEdit(false);
@@ -397,31 +266,30 @@ const Products = (props) => {
           />
         )}
       </Modal>
-
       <Modal isOpen={openDeleteModal} backdrop={true}>
-        {openDeleteModal && (
-          <ConformationModal
-            isOpen={openDeleteModal}
-            onClose={() => toggleDeleteModalOpen(false)}
-            confirmText={"Delete"}
-            message={"Are you sure to delete product ?"}
-            handleConfirm={() => deleteClick()}
-          />
-        )}
+      {openDeleteModal && (
+        <ConformationModal
+          isOpen={openDeleteModal}
+          onClose={() => toggleDeleteModalOpen(false)}
+          confirmText={"Delete"}
+          message={"Are you sure to delete Images?"}
+          handleConfirm={() => deleteClick()}
+        />
+      )}
       </Modal>
     </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     ...state.themeChanger,
     token: state.auth.accessToken,
-    user: state.auth.user,
+    user: state.auth.user
   };
 };
 export default compose(
   withRouter,
   connect(mapStateToProps, { success, error, fetching, setuser })
-)(Products);
+)(Gallerys);
