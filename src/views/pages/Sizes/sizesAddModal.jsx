@@ -94,7 +94,6 @@ const SizesAddModal = (props) => {
         ...editData
       });
 
-      console.log("editData",editData)
     // eslint-disable-next-line
   }, [editData]);
 

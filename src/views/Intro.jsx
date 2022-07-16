@@ -6,11 +6,11 @@ class Intro extends Component {
 
     render() {
 
-        const { sidebarTheme } = this.props
+        // const { sidebarTheme } = this.props
 
-        const activeColor = {
-            color: sidebarTheme.activeColor
-        }
+        // const activeColor = {
+        //     color: sidebarTheme.activeColor
+        // }
 
         return (
             <div>

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import NavigationActions from "redux/navigation/actions";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import AuthActions from "redux/auth/actions";
 import { ModalHeader, ModalBody, Button } from "reactstrap";
-import "../../../assets/css/products.css";
+import "../../../assets/css/products_css.css";
 import { importFiles } from "services/productServices";
 // import {
 //   addColor,
@@ -60,7 +60,6 @@ const ImportProductsmodal = (props) => {
     formData.append("file", file);
     // var formData = new FormData();
     // formData.append("file",file);
-    console.log(file);
 
     // formData.append("type", selectedChartType);
     importFiles(token, formData).then((data) => {

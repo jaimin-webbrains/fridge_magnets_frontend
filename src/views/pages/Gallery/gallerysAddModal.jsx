@@ -138,10 +138,6 @@ const GallerysAddModal = (props) => {
   }, [editData]);
 
     
-    
-    
-  // console.log(editData,"editData")
-
   return (
     <>
       <ModalHeader toggle={() => onClose()}>
@@ -182,7 +178,6 @@ const GallerysAddModal = (props) => {
             onBlur={handleBlur}
             multiple
             onChange={(e) => {
-              console.log(e.target.files)
               setProductImagesArr(e.target.files)
               setFieldValue("product_images",e.target.files)
             }}

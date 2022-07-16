@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import enhancer from "./enhancer/settingenhancer";
 import NavigationActions from "redux/navigation/actions";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import AuthActions from "redux/auth/actions";
-import { ModalHeader, ModalBody, Button } from "reactstrap";
+import {  Button } from "reactstrap";
 
-import { addColor, updateColor } from "services/colorServices";
+// import { addColor, updateColor } from "services/colorServices";
 import { getsetting, updatesetting } from "services/settingservices";
-import { toast } from "react-toastify";
-import { object } from "prop-types";
+// import { toast } from "react-toastify";
+// import { object } from "prop-types";
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
@@ -20,11 +20,11 @@ const Settings = (props) => {
   const {
     token,
     success,
-    fetching,
-    isFetching,
+    // fetching,
+    // isFetching,
     error,
-    isEdit,
-    onClose,
+    // isEdit,
+    // onClose,
     values,
     handleChange,
     handleSubmit,
@@ -34,9 +34,9 @@ const Settings = (props) => {
     errors,
     touched,
     submitCount,
-    toggleRefresh,
+    // toggleRefresh,
     setFieldValue,
-    editData,
+    // editData,
   } = props;
 
   // usestate
@@ -67,14 +67,12 @@ const Settings = (props) => {
       return <span />;
     }
   };
-  console.log("values",values)
   const handlesettingSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
-    var data = { ...values };
+    // var data = { ...values };
     var formData = new FormData();
     for (const val in values) {
-      console.log(val, "ghf");
       // if (val === "logo") {
       //   formData.append(val, JSON(values[val]));
       // } else {
@@ -113,15 +111,13 @@ const Settings = (props) => {
     await getsetting(token).then((data) => {
       if (data.success) {
         success(data.message);
-        console.log("getdata", data.data);
         setValues(data.data[0]);
       } else {
         error(data.message);
       }
     });
   };
-  console.log(values, "fhjgh");
-  // //USEEFFECTS
+  // USEEFFECTS
 
   useEffect(() => {
     get_Setting();
@@ -190,7 +186,6 @@ const Settings = (props) => {
                     id='logo'
                     onBlur={handleBlur}
                     onChange={(e) => {
-                      console.log(e.target.files, "jjk");
                       const [file] = e.target.files;
                       setImage(URL.createObjectURL(file));
                       setFieldValue("logo", e.target.files[0]);
@@ -232,6 +227,7 @@ const Settings = (props) => {
                             padding: "3px",
                             marginTop: "10px",
                           }}
+                          alt="logo"
                         ></img>
                       </a>
                     </span>

@@ -37,10 +37,8 @@ const BrandsAddModal = (props) => {
     toggleRefresh,
     editData,
   } = props;
- console.log("isValid",isValid)
  
  
-
   const Error = (props) => {
     const field1 = props.field;
     if ((errors[field1] && touched[field1]) || submitCount > 0) {
@@ -54,7 +52,6 @@ const BrandsAddModal = (props) => {
     }
   };
 
-
   const handleBrandSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
@@ -63,7 +60,6 @@ const BrandsAddModal = (props) => {
       name: values.name,
       description: values.description
     };
-    // console.log("isValid",isValid)
     if (isValid) {
   
       fetching();

@@ -50,7 +50,6 @@ const NewsAddModal = (props) => {
       return <span />;
     }
   };
-  console.log(editData)
 
   const handleNewsSubmit = async (e) => {
     e.preventDefault();
@@ -101,12 +100,10 @@ const NewsAddModal = (props) => {
         ...editData
       });
 
-      console.log("editData",editData)
     // eslint-disable-next-line
   }, [editData]);
 
 
-  console.log("values",values)
 
   return (
     <>
@@ -147,7 +144,7 @@ const NewsAddModal = (props) => {
           </div>
         </div>
        
-        <div className="mb-2">
+        <div className="mb-10">
         
                <label  className="d-block my-2">
                   News Feed Image<span className="error-msg"> *</span>
@@ -167,14 +164,16 @@ const NewsAddModal = (props) => {
                     }
                     setFieldValue("news_image", e.target.files[0]);
                   }
-                  else{                  
-                    // setProductImage()
-                    setFieldValue("news_image", "");                 
+                  else{  
+                    setImg()
+                    setFieldValue("news_image","");                 
                   }
                 }}
               />              
 
         </div>
+        <Error field="news_image" />
+
         <div>
         {img ? (
                 <>

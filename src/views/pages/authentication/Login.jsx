@@ -1,35 +1,98 @@
 import React from "react";
-import { loginBack, iconDemo } from "helper/constant";
+import { loginBack } from "helper/constant";
+import NavigationActions from "redux/navigation/actions";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { withRouter } from "react-router-dom";
 import AuthActions from "redux/auth/actions";
 import enhancer from "./enhancer/LoginFormEnhancer";
+import { loginApi } from "services/loginServices";
 
-const { login } = AuthActions;
+
+const { login, check } = AuthActions;
+const {
+  success,
+  error,
+  fetching,
+} = NavigationActions;
 
 const Login = props => {
-    const handleLogin = e => {
+    
+        const {
+        //   token,
+          success,
+          error,
+          values,
+          handleChange,
+        //   toggleSubscriptionLoader,
+          handleBlur,
+          errors,
+          touched,
+          submitCount,
+        //   toggleOneTimeModal,
+          fetching,
+        //   isFetching
+        } = props;
+
+    // const handleLogin = e => {
+    //     e.preventDefault();
+    //     let { values, handleSubmit } = props;
+
+    //     if (values.email !== "" && values.password !== "") {
+
+    //         const data = {
+    //             token: "DEMOJWTTOKEN"
+    //         };
+    //         // using this method you can store token in redux
+    //         props.login(data);
+    //         props.history.push("/login");
+    //     }
+    //     handleSubmit();
+    // };
+
+    const handleLogin = async (e) => {
+        let { values, isValid, handleSubmit } = props;
         e.preventDefault();
-        let { values, handleSubmit } = props;
-
-        if (values.email !== "" && values.password !== "") {
-            // console.log("Here is your form value", values);
-
-            const data = {
-                token: "DEMOJWTTOKEN"
-            };
-            // using this method you can store token in redux
-            props.login(data);
-            props.history.push("/Products");
-        }
         handleSubmit();
-    };
+        if (isValid) {
 
-    const { values, handleChange, handleBlur, errors, touched, submitCount } = props;
+
+          fetching();
+          await loginApi(values).then(data => {
+            if (data.success) {
+              success(data.message);
+            //   props.login(data.data);
+            //   if (rememberMe) {
+            //     var date = new Date();
+            //     date.setDate(date.getDate() + 7);
+            //     document.cookie = `token=${data.data.token} ;SameSite=strict;expires=${date}`;
+            //   }
+            //   if (data.data.access_key_send) {
+            //     props.history.push("/change-password");
+            //   } 
+            //   else {
+                // if (!data.data.package?.expired) {
+                //   if (Object.keys(data.data?.package).length === 0) {
+                //     toggleOneTimeModal(true);
+                //   } else if (
+                //     data.data?.package?.package_type === "Trial" ||
+                //     (data.data?.package?.package_type !== "Trial" &&
+                //       data.data.package?.difference_in_days <= 5)
+                //   ) {
+                //     toggleOneTimeModal(true);
+                //   }
+                // }
+                props.history.push("/products");
+            //   }
+            } else {
+              error(data.message);
+            }
+          });
+        }
+      };
 
     const loginContainer = {
-        backgroundImage: `url(${loginBack})`,
+        backgroundImage: `url(${loginBack})` ,
         backgroundPosition: "center center",
         backgroundSize: "cover",
         position: "fixed",
@@ -55,7 +118,7 @@ const Login = props => {
         <div className="container-fluid" style={loginContainer}>
             <div className="form-container">
                 <div className="login-icon">
-                    <img src={iconDemo} alt="icon" height="100px" />
+                    {/* <img src={roelogo2} alt="icon" height="100px" /> */}
                 </div>
                 <div className="login-title">Sign in to your account</div>
                 <form className="pa-24" onSubmit={handleLogin}>
@@ -116,11 +179,23 @@ const Login = props => {
     );
 };
 
+const mapStateToProps = state => {
+    return {
+      token: state.auth.accessToken,
+      isFetching: state.navigation.isFetching
+    };
+  };
+
 export default compose(
     withRouter,
     enhancer,
-    connect(
-        null,
-        { login }
-    )
-)(Login);
+    connect(mapStateToProps, {
+      check,
+      login,
+      success,
+      error,
+    //   toggleOneTimeModal,
+    //   toggleSubscriptionLoader,
+      fetching
+    })
+  )(Login);

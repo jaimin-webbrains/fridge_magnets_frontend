@@ -1,25 +1,27 @@
 import React from "react";
 import HeaderWrapper from "./header.style";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-import {
-    friend1,
-    friend2,
-    friend3,
-    people1,
-    people2,
-    people3,
-    ProfileLockScreen,
-} from "helper/constant";
+// import {
+//     friend1,
+//     friend2,
+//     friend3,
+//     people1,
+//     people2,
+//     people3,
+//     ProfileLockScreen,
+// } from "helper/constant";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import AuthActions from "redux/auth/actions";
 import { withRouter } from "react-router-dom";
-import PopoverBlock from "./PopoverBlock";
+// import PopoverBlock from "./PopoverBlock";
 
 const { logout } = AuthActions;
 
 const Header = (props) => {
-    const { drawerMiniMethod, mini, layoutSettingDrawerToggle } = props;
+    const { drawerMiniMethod, mini, 
+        // layoutSettingDrawerToggle
+     } = props;
 
     const userSignout = () => {
         props.logout();

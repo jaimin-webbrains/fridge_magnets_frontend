@@ -1,21 +1,13 @@
-import React, { Fragment } from 'react';
-
+import React from "react";
+// import LoaderSvg from "assets/images/Loaders/loader-1.svg";
+import LoaderSvg from "assets/images/Loaders/loader-1.svg"
 const LoaderComponent = props => {
-    return (
-        <Fragment>
-            {
-                props.loading &&
-                <div className="tbl-loader">
-                    <div className="lds-ring">
-                        <div />
-                        <div />
-                        <div />
-                        <div />
-                    </div>
-                </div>
-            }
-        </Fragment>
-    );
+  return (
+    <div className="loader-design">
+      <div className="text-center loader-center">
+        <img src={LoaderSvg} alt="loader" className="loader-img" />
+      </div>
+    </div>
+  );
 };
-
 export default LoaderComponent;

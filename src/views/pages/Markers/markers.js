@@ -106,7 +106,6 @@ const Markers = props => {
                 className="table-action action-delete"
                 onClick={() => {
                   toggleDeleteModalOpen(true);
-                  console.log(tableInstance.row.original,"tableInstance.row.original")
                   setDeleteID(tableInstance.row.original.id);
                 }}
               >

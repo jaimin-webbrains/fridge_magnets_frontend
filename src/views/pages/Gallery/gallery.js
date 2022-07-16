@@ -11,9 +11,9 @@ import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import Pagination from "components/common/Pagination";
 import { deleteGallery, getGallerys } from "services/galleryServices";
 import ConformationModal from "components/common/ConformationModal";
-import { Edit3, Plus, Trash } from "react-feather";
+import {  Plus, Trash } from "react-feather";
 import GallerysAddModal from "./gallerysAddModal";
-import { getCategories } from "services/categoryServices";
+// import { getCategories } from "services/categoryServices";
 
 
 const { success, error, fetching } = NavigationActions;

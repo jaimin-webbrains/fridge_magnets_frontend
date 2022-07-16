@@ -63,10 +63,7 @@ const CategoriesAddForm = (props) => {
   const get_Categoriesby_id = async () => {
     await getCategories(token).then((data) => {
       if (data.success) {
-       setValues(data.data.find(val=>val.id==id))
-        // setValues(
-        //   data.data.map((val) => ({ value: val.id, label: val.name }))
-        // );
+       setValues(data.data.find(val=>parseInt(val.id)===parseInt(id)))
       } else {
         error(data.message);
       }
@@ -135,7 +132,6 @@ const CategoriesAddForm = (props) => {
     // eslint-disable-next-line
   }, [id]);
 
-  console.log("values",values)
 
   return (
     <div className="card m-2 p-2">
