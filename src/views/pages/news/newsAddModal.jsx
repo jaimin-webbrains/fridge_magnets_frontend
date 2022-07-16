@@ -152,7 +152,7 @@ const NewsAddModal = (props) => {
           
               <input
                 type="file"
-                className="mr-2"
+                className="mr-2 mb-10"
                 id="news_image"
                 accept="image/png, image/gif, image/jpeg"
                 onBlur={handleBlur}
@@ -208,7 +208,7 @@ const NewsAddModal = (props) => {
         </div>
 
         <Button
-          className="btn c-primary btn-block"
+          className="btn c-primary btn-block mt-10"
           onClick={(e) => handleNewsSubmit(e)}
           type="button"
           disabled={isFetching}

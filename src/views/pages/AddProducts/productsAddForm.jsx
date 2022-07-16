@@ -414,7 +414,7 @@ const ProductsAddModal = (props) => {
               </div>
             </div>
 
-            <div className="col-md-6 mb-3">
+            <div className="col-md-6 mb-16">
               <label className="d-block my-2">
                 Product Quantity <span className="error-msg">*</span>
               </label>
@@ -431,7 +431,7 @@ const ProductsAddModal = (props) => {
               </div>
             </div>
 
-            <div className="col-md-6 mb-3">
+            <div className="col-md-6 mb-16">
               <label className="d-block my-2">SKU</label>
               <input
                 type="text"
@@ -610,7 +610,7 @@ const ProductsAddModal = (props) => {
           {/* BRANDS */}
 
           <div className="sec_border">
-            <div className="row mb-3">
+            <div className="row mb-16">
               <div className="col-9 ">
                 <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                   Product Brands{" "}
@@ -638,7 +638,7 @@ const ProductsAddModal = (props) => {
             {values.brands !== undefined &&
               values.brands.map((s, k) => (
                 <div className="row" key={k}>
-                  <div className="col-md-3 mb-3">
+                  <div className="col-md-3 mb-16">
                     <div>
                       <label>
                         Select Brand
@@ -785,7 +785,7 @@ const ProductsAddModal = (props) => {
           {/* IMAGE */}
 
           <div className="row">
-            <div className="col-12 my-2 sec_height mb-3">
+            <div className="col-12 my-2 sec_height mb-16">
               <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                 Product Featured Image{" "}
               </span>

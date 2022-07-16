@@ -121,7 +121,7 @@ const BrandsAddModal = (props) => {
           <Error field="name" />
         </div>
 
-        <div className="mb-3">
+        <div className="mb-16">
           <label>
             Description <span className="error-msg">*</span>
           </label>

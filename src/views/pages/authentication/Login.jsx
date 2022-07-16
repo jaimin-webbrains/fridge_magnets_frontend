@@ -19,7 +19,7 @@ const {
 const Login = props => {
     
         const {
-        //   token,
+          token,
           success,
           error,
           values,
@@ -34,6 +34,7 @@ const Login = props => {
         //   isFetching
         } = props;
 
+        // console.log("token",  token)
     // const handleLogin = e => {
     //     e.preventDefault();
     //     let { values, handleSubmit } = props;
@@ -61,7 +62,9 @@ const Login = props => {
           await loginApi(values).then(data => {
             if (data.success) {
               success(data.message);
-            //   props.login(data.data);
+              // console.log("data.data.token",data.data.token)
+              localStorage.setItem("token",data.data.token)
+              props.login(data.data);
             //   if (rememberMe) {
             //     var date = new Date();
             //     date.setDate(date.getDate() + 7);
