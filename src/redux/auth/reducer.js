@@ -3,7 +3,8 @@ import authAction from './actions'
 
 const initState = {
     isLogin: localStorage.getItem('isLogin') ? localStorage.getItem('isLogin') === 'true' : false,
-    accessToken: localStorage.getItem('accessToken')
+    accessToken: localStorage.getItem('accessToken'),
+    user_id:""
 }
 
 
@@ -15,6 +16,7 @@ export default function rootReducer(state = initState, action) {
                 ...state,
                 isLogin: action.isLogin,
                 accessToken: action.accessToken,
+                user_id:action.user_id
             }
         case authAction.LOGOUT:
             return {

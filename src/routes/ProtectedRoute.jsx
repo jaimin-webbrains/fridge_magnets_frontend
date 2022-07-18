@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ authData, children }) => {
             ) : (
                 <Redirect to={"/login"} />
             )}
-             {/* <Fragment>{children}</Fragment> */}
+             {/* <Fragment>{children}</Fragment> */}        
         </div>
     );
 };

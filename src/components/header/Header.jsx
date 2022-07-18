@@ -1,32 +1,55 @@
 import React from "react";
 import HeaderWrapper from "./header.style";
 import { UncontrolledPopover, PopoverBody } from "reactstrap";
-// import {
+import {
 //     friend1,
 //     friend2,
 //     friend3,
 //     people1,
 //     people2,
 //     people3,
-//     ProfileLockScreen,
-// } from "helper/constant";
+    ProfileLockScreen,
+} from "helper/constant";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import AuthActions from "redux/auth/actions";
 import { withRouter } from "react-router-dom";
+import {user_logout} from "../../services/loginServices"
 // import PopoverBlock from "./PopoverBlock";
 
 const { logout } = AuthActions;
 
 const Header = (props) => {
-    const { drawerMiniMethod, mini, 
-        // layoutSettingDrawerToggle
-     } = props;
+    // const { drawerMiniMethod, mini, 
+    //     // layoutSettingDrawerToggle
+    //  } = props;
 
-    const userSignout = () => {
+     const {
+        drawerMiniMethod,
+        mini,
+        token,
+        login,
+        user,
+        success,
+        error
+      } = props;
+
+    console.log(props)
+
+  const userSignout = async val => {
+    await user_logout(token).then(data => {
+      if (data.success) {
+        // setuser(data.data);
+        // console.log("data-logut")
         props.logout();
-    };
-
+        // setSearchResult(data.data);
+        success();
+      } else {
+        error(data.message);
+      }
+    });
+  };
+ 
     return (
         <HeaderWrapper {...props}>
             <div className="headerBack">
@@ -138,11 +161,11 @@ const Header = (props) => {
                     </div> */}
                     <div className="pl-10">
                         <div id="profile">  
-                            {/* <img
+                            <img
                                 className="top-header-profile-class"
                                 src={ProfileLockScreen}
-                                alt="notify"
-                            /> */}
+                                alt="Profile"
+                            />
                         </div>
                         <UncontrolledPopover
                             className="roy-menu"
@@ -184,4 +207,16 @@ const Header = (props) => {
     );
 };
 
-export default compose(withRouter, connect(null, { logout }))(Header);
+const mapStateToProps = state => {
+    return {
+      token: state.auth.accessToken,
+      user: state.auth.user,
+    //   login:state.
+    };
+  };
+  export default compose(
+    withRouter,
+    connect(mapStateToProps, { logout })
+  )(Header);
+
+// export default compose(withRouter, connect(null, { logout }))(Header);
