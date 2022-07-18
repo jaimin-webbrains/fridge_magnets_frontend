@@ -90,7 +90,6 @@ const News = props => {
         accessor: "description",
         Cell: tableInstance => (
           <span className="text-capitalize">
-            {/* {console.log(tableInstance.row.original.news_description)} */}
             {tableInstance.row.original.news_description}
           </span>
         )
@@ -126,7 +125,6 @@ const News = props => {
                 className="table-action action-delete"
                 onClick={() => {
                   toggleDeleteModalOpen(true);
-                  console.log(tableInstance.row.original,"tableInstance.row.original")
                   setDeleteID(tableInstance.row.original.id);
                 }}
               >

@@ -9,9 +9,7 @@ const formikEnhancer = withFormik({
     news_image:Yup.string()
       .required("Please select News Feed Image"),
     news_description: Yup.string()
-      .required("Please Enter News")
-
-    
+      .required("Please Enter News Description")    
   }),
   validateOnMount: true,
   mapPropsToValues: props => ({

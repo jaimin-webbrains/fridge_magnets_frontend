@@ -11,8 +11,8 @@ const formikEnhancer = withFormik({
       .email("Invalid Email Format")
       .required("Required"),
     logo: Yup.string().required("please select logo"),
-    artwork_label1: Yup.string().required("please Enter Artwork Label"),
-    artwork_label2: Yup.string().required("please Enter Artwork Label"),
+    artwork_label1: Yup.string().required("Please Enter Artwork Label"),
+    artwork_label2: Yup.string().required("Please Enter Artwork Label"),
   }),
   validateOnMount: true,
   mapPropsToValues: (props) => ({

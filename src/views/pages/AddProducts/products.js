@@ -13,7 +13,7 @@ import { deleteProduct, getProductsTable } from "services/productServices";
 import ConformationModal from "components/common/ConformationModal";
 import { Edit3, Plus, Trash } from "react-feather";
 import ImportProductsmodal from "./importProductsmodal";
-import "../../../assets/css/products.css"
+import "../../../assets/css/products_css.css"
 import "../../../assets/css/thumbnail.css"
 
 const { success, error, fetching } = NavigationActions;
@@ -122,7 +122,6 @@ const Products = (props) => {
             {tableInstance.row.original?.category_name && tableInstance.row.original?.category_name !== null?tableInstance.row.original?.category_name:tableInstance.row.original?.parent_category_name}
           </span>
     
-          {/* {console.log(tableInstance.row)}  */}
           </div>
         
         ),
@@ -144,7 +143,6 @@ const Products = (props) => {
           <div>
              <span className="text-capitalize">
             {tableInstance.row.original.color}
-          {/* {console.log(tableInstance.row)}  */}
           </span>    
           </div>
         
@@ -167,7 +165,6 @@ const Products = (props) => {
           <div>
              <span className="text-capitalize">
             {tableInstance.row.original.size}
-          {/* {console.log(tableInstance.row)}  */}
           </span>    
           </div>
         
@@ -190,7 +187,6 @@ const Products = (props) => {
           <div>
              <span className="text-capitalize">
             {tableInstance.row.original.paper}
-          {/* {console.log(tableInstance.row)}  */}
           </span>    
           </div>
         

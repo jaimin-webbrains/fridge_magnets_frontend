@@ -138,10 +138,6 @@ const GallerysAddModal = (props) => {
   }, [editData]);
 
     
-    
-    
-  // console.log(editData,"editData")
-
   return (
     <>
       <ModalHeader toggle={() => onClose()}>
@@ -176,21 +172,24 @@ const GallerysAddModal = (props) => {
           </div>
           <input
             type="file"
-            className="mr-2"
+            className="mr-2 mb-8"
             id="product_images"
             accept="image/png, image/gif, image/jpeg,image/jpg"
             onBlur={handleBlur}
             multiple
             onChange={(e) => {
-              console.log(e.target.files)
               setProductImagesArr(e.target.files)
               setFieldValue("product_images",e.target.files)
             }}
           />
+           <div>
+            <Error field="product_images"/>          
+          </div>
         </div>
+       
 
         <Button
-          className="btn c-primary btn-block mt-3"
+          className="btn c-primary btn-block mt-8"
           onClick={(e) => handleGallerySubmit(e)}
           type="button"
           disabled={isFetching}

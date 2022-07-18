@@ -308,7 +308,6 @@ const ProductsAddModal = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  console.log("values",values)
 
   return (
     <div className="card m-2 p-2">
@@ -367,12 +366,11 @@ const ProductsAddModal = (props) => {
                         )
                       : null
                   }
-                   onChange={(val) => {
-                    console.log("onclear how it wo",val)
+                   onChange={(val) => 
+                    {
                     setFieldValue("parent_category_id", val?.value);
                     setFieldValue("category_id", "");
                   }}
-                  onInputChange={(val) => console.log(val)}
                   options={parentCatOptions}
                 />
                 <Error field="parent_category_id" />
@@ -391,8 +389,7 @@ const ProductsAddModal = (props) => {
                       ? categoryOptions.find(
                           (x) => x.value === values.category_id
                         )
-                      : null
-                                  
+                      : null                                  
                   }
                  
                   onCreateOption={(val)=>{                  
@@ -405,7 +402,7 @@ const ProductsAddModal = (props) => {
                     }
                     else if(val===null){
                       setFieldValue("category_name",)
-                      setFieldValue("category_id","")
+                      setFieldValue("category_id","") 
                     }
                    }}
                   options={values.parent_category_id?categoryOptions:null}
@@ -417,7 +414,7 @@ const ProductsAddModal = (props) => {
               </div>
             </div>
 
-            <div className="col-md-6 mb-3">
+            <div className="col-md-6 mb-16">
               <label className="d-block my-2">
                 Product Quantity <span className="error-msg">*</span>
               </label>
@@ -434,7 +431,7 @@ const ProductsAddModal = (props) => {
               </div>
             </div>
 
-            <div className="col-md-6 mb-3">
+            <div className="col-md-6 mb-16">
               <label className="d-block my-2">SKU</label>
               <input
                 type="text"
@@ -603,7 +600,6 @@ const ProductsAddModal = (props) => {
                       }
                     }
                     }
-                  onInputChange={(val) => console.log(val)}
                   options={markerOptions}
                 />
                 <Error field="marker_id" />
@@ -614,7 +610,7 @@ const ProductsAddModal = (props) => {
           {/* BRANDS */}
 
           <div className="sec_border">
-            <div className="row mb-3">
+            <div className="row mb-16">
               <div className="col-9 ">
                 <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                   Product Brands{" "}
@@ -642,7 +638,7 @@ const ProductsAddModal = (props) => {
             {values.brands !== undefined &&
               values.brands.map((s, k) => (
                 <div className="row" key={k}>
-                  <div className="col-md-3 mb-3">
+                  <div className="col-md-3 mb-16">
                     <div>
                       <label>
                         Select Brand
@@ -789,7 +785,7 @@ const ProductsAddModal = (props) => {
           {/* IMAGE */}
 
           <div className="row">
-            <div className="col-12 my-2 sec_height mb-3">
+            <div className="col-12 my-2 sec_height mb-16">
               <span style={{ fontSize: "18px", fontWeight: "bold" }}>
                 Product Featured Image{" "}
               </span>

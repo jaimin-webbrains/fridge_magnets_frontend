@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { Collapse, CardBody, Card } from "reactstrap";
-import IntlMessages from "util/intlMessages";
+// import IntlMessages from "util/intlMessages";
 import classNames from "classnames";
 
 const NavSecondChild = props => {

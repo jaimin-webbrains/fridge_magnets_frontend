@@ -39,7 +39,7 @@ const App = props => {
                     <Route
                       exact
                       path="/"
-                      render={() => <Redirect to="/Products" />}
+                      render={() => <Redirect to="/login" />}
                     />
                     {layoutRoutes.map((prop, key) => {
                       return (

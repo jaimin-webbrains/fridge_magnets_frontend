@@ -89,7 +89,6 @@ const Inquiries = (props) => {
         accessor: "name",
         Cell: (tableInstance) => (
           <span className="text-capitalize">
-            {console.log(tableInstance.row)}
             {tableInstance.row.original.name}
           </span>
         ),
@@ -404,7 +403,6 @@ const Inquiries = (props) => {
       //           className="table-action action-delete"
       //           onClick={() => {
       //             toggleDeleteModalOpen(true);
-      //             // console.log(tableInstance.row.original,"tableInstance.row.original")
       //             setDeleteID(tableInstance.row.original.id);
       //           }}
       //         >
