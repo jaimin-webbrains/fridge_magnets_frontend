@@ -182,15 +182,15 @@ const Header = (props) => {
                             trigger="legacy"
                         >
                             <PopoverBody>
-                                <div
+                                {/* <div
                                     className="roy-menu-list"
                                     onClick={() =>
                                         props.history.push("/profile")
                                     }
                                 >
                                     My Profile
-                                </div>
-                                <div className="roy-menu-list">Settings</div>
+                                </div> */}
+                                {/* <div className="roy-menu-list">Settings</div> */}
                                 <div
                                     className="roy-menu-list"
                                     onClick={userSignout}

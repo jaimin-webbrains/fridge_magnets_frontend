@@ -144,12 +144,11 @@ const Categories = props => {
               <button
                 className="table-action action-edit"
                
-                // style={tableInstance.row.original.id !== 2 || tableInstance.row.original.id !== 1?{color:"red"}:null}
+                style={{cursor: tableInstance.row.original.id > 2 ?"pointer":"default" }}
 
                 disabled={tableInstance.row.original.id > 2 ? false:true}
 
                 onClick={() => {
-                 console.log("tableInstance.row.original.id",tableInstance.row.original.id,typeof tableInstance.row.original.id )
                   
                    if(tableInstance.row.original.id !== 2 && tableInstance.row.original.id !== 1){
                        props.history.push( `/Categories/Edit/${tableInstance.row.original.id}`)
@@ -164,6 +163,8 @@ const Categories = props => {
               </button>
               <button
                 className="table-action action-delete"
+                style={{cursor: tableInstance.row.original.id > 2 ?"pointer":"default" }}
+                disabled={tableInstance.row.original.id > 2 ? false:true}
                 onClick={() => {
                   toggleDeleteModalOpen(true);
                   setDeleteID(tableInstance.row.original.id);

@@ -5,6 +5,7 @@ const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
     marker: Yup.string()
       .required("Please Enter The type of Marker")
+      .matches(/[a-zA-Z]$/, "Please enter valid Marker Name")
       .max(50)
 
     

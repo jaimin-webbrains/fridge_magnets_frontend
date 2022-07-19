@@ -198,7 +198,8 @@ const Settings = (props) => {
                     
                     <span className='m-2'>
                       <a
-                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
+                        // href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
+                        href = {image}
                       >
                        {/*  eslint-disable-next-line */}
                         <img
