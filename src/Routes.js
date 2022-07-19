@@ -26,6 +26,8 @@ const Routes = (props) => {
     toggleSubscriptionLoader,
   } = props;
 
+  console.log(props)
+
   const location = useLocation();
 
 

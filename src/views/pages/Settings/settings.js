@@ -241,9 +241,9 @@ const Settings = (props) => {
           </div>
         </div>
       </div>
-      <div class='card mt-3'>
-        <div class='card-header'>Form Label</div>
-        <div class='card-body'>
+      <div className='card mt-3'>
+        <div className='card-header'>Form Label</div>
+        <div className='card-body'>
           <div className='container'>
             <div className='row'>
               <div className='col-12 mb-2'>

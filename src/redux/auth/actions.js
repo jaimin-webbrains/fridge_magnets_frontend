@@ -4,15 +4,14 @@ const authActions = {
     // SET_USER:"SET_USER",
     
     login: (data) => {
-
         localStorage.setItem("isLogin", true);
         localStorage.setItem("accessToken", data.token);
         return {
             type: authActions.LOGIN,
             isLogin: true,
             accessToken: data.token,
-            // user_id:data.id,
-            // user: data
+            user_id:data.id,
+            user: data
 
         };
     },
