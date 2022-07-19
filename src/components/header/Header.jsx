@@ -14,10 +14,13 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import AuthActions from "redux/auth/actions";
 import { withRouter } from "react-router-dom";
-import {user_logout} from "../../services/loginServices"
+import {logoutApi} from "../../services/loginServices"
+import NavigationAction from "redux/navigation/actions";
 // import PopoverBlock from "./PopoverBlock";
 
 const { logout } = AuthActions;
+const { success } = NavigationAction;
+
 
 const Header = (props) => {
     // const { drawerMiniMethod, mini, 
@@ -28,22 +31,26 @@ const Header = (props) => {
         drawerMiniMethod,
         mini,
         token,
+        user_id,
         login,
-        user,
+        // user,
         success,
         error
       } = props;
 
-    console.log(props)
+    const id = {id:user_id,token:token}
 
   const userSignout = async val => {
-    await user_logout(token).then(data => {
+    await logoutApi(token,id).then(data => {
       if (data.success) {
         // setuser(data.data);
-        // console.log("data-logut")
         props.logout();
+        // localStorage.setItem("accesstoken",null)
+        // localStorage.setItem("isLogin",false)
+        // localStorage.setItem("token",null)
+
         // setSearchResult(data.data);
-        success();
+        success(data.message);
       } else {
         error(data.message);
       }
@@ -211,12 +218,16 @@ const mapStateToProps = state => {
     return {
       token: state.auth.accessToken,
       user: state.auth.user,
+      user_id:state.auth.user_id,
+     isFetching: state.navigation.isFetching,
+
+      
     //   login:state.
     };
   };
   export default compose(
     withRouter,
-    connect(mapStateToProps, { logout })
+    connect(mapStateToProps, { success,logout })
   )(Header);
 
 // export default compose(withRouter, connect(null, { logout }))(Header);

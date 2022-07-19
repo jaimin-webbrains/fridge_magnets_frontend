@@ -201,7 +201,7 @@ const ImportProductsmodal = (props) => {
 const mapStateToProps = (state) => {
   return {
     ...state.themeChanger,
-    token: state.auth.accessToken,
+    token: state.auth.token,
     user: state.auth.user,
     isFetching: state.navigation.isFetching,
   };

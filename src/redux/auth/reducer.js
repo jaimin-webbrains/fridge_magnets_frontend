@@ -24,6 +24,18 @@ export default function rootReducer(state = initState, action) {
                 isLogin: action.isLogin,
                 accessToken: null
             }
+    //         case authAction.LOGIN:
+    //   return {
+    //     ...state,
+    //     isLogin: action.isLogin,
+    //     accessToken: action.accessToken,
+    //     user: action.user
+    //   };
+    // case authAction.SET_USER:
+    //   return {
+    //     ...state,
+    //     user: action.user
+    //   };
         default:
             return state
     }

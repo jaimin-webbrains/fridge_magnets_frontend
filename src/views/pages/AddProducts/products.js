@@ -400,7 +400,7 @@ const Products = (props) => {
             isOpen={openDeleteModal}
             onClose={() => toggleDeleteModalOpen(false)}
             confirmText={"Delete"}
-            message={"Are you sure to delete product ?"}
+            message={"Are you sure you want you want to  delete product ?"}
             handleConfirm={() => deleteClick()}
           />
         )}

@@ -5,9 +5,7 @@ const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
     color: Yup.string()
       .required("Please Enter Color")
-      .max(50)
-
-    
+      .matches(/^[A-Za-z]*$/, "Please Enter Valid color"),    
   }),
   validateOnMount: true,
   mapPropsToValues: props => ({

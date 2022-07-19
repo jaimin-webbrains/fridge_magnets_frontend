@@ -126,9 +126,9 @@ const Settings = (props) => {
   }, []);
   return (
     <>
-      <div class='card'>
-        <div class='card-header'>Footer Details</div>
-        <div class='card-body'>
+      <div className='card'>
+        <div className='card-header'>Footer Details</div>
+        <div className='card-body'>
           <div className='container'>
             <div className='row'>
               <div className='col-12 mb-2'>

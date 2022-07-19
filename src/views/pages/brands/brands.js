@@ -264,7 +264,7 @@ const Brands = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete brand ?"}
+          message={"Are you sure you want to  delete brand ?"}
           handleConfirm={() => deleteClick()}
         />
       )}

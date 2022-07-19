@@ -265,7 +265,7 @@ const News = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete news ?"}
+          message={"Are you sure you want to  delete news ?"}
           handleConfirm={() => deleteClick()}
         />
       )}

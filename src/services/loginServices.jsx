@@ -12,10 +12,16 @@ export const forgotPassword = data =>
      .then(handleResponse)
      .catch(handleError);
 
-export const user_logout = token =>
+export const logoutApi = (token, data) =>
      api(token)
-     .get("/auth/logout")
+     .post("/auth/logout",data)
      .then(handleResponse)
      .catch(handleError);
+
+export const checkApi = (token,data) =>
+     api(token)
+       .post("/auth/check",data)
+       .then(handleResponse)
+       .catch(handleError);
 
 // router.get ("", auth , AuthController.logout);

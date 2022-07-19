@@ -246,7 +246,7 @@ const Sizes = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete size ?"}
+          message={"Are you sure you want to remove size ?"}
           handleConfirm={() => deleteClick()}
         />
       )}

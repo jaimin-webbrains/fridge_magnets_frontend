@@ -246,7 +246,7 @@ const Papers = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete paper ?"}
+          message={"Are you sure you want to remove paper ?"}
           handleConfirm={() => deleteClick()}
         />
       )}

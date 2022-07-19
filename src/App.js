@@ -1,14 +1,13 @@
 import React, { Fragment } from "react";
-import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import { ThemeProvider } from "styled-components";
+import { BrowserRouter as Router } from "react-router-dom";
 // Redux store provider
 import { Provider } from "react-redux";
 import { store, history, persistor } from "./redux/store";
 // Style Root for making media queries to inline css
 import { StyleRoot } from "radium";
 // Layout Routes
-import layoutRoutes from "./routes/index.jsx";
 import themes from "./settings/themes";
 import AppLocale from "./languageProvider";
 import { themeConfig } from "./settings";
@@ -18,6 +17,7 @@ import "./assets/scss/app.scss";
 import "pretty-checkbox/src/pretty-checkbox.scss";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Routes from "Routes";
 
 const currentAppLocale =
   AppLocale[getCurrentLanguage(config.defaultLanguage || "english").locale];
@@ -34,8 +34,10 @@ const App = props => {
             <Provider store={store}>
               <PersistGate loading={null} persistor={persistor}>
                 {/*Start layout routes */}
-                <Router history={history}>
-                  <Switch>
+                
+               <Router history={history}>
+               <Routes/>
+                 {/*   <Switch>
                     <Route
                       exact
                       path="/"
@@ -51,8 +53,8 @@ const App = props => {
                         />
                       );
                     })}
-                  </Switch>
-                </Router>
+                  </Switch>*/}
+                </Router> 
                 <ToastContainer
                   position="top-right"
                   autoClose={5000}

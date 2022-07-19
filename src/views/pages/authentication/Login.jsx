@@ -24,7 +24,6 @@ const Login = props => {
           error,
           values,
           handleChange,
-        //   toggleSubscriptionLoader,
           handleBlur,
           errors,
           touched,
@@ -62,7 +61,6 @@ const Login = props => {
           await loginApi(values).then(data => {
             if (data.success) {
               success(data.message);
-              // console.log("data.data.token",data.data.token)
               localStorage.setItem("token",data.data.token)
               props.login(data.data);
             //   if (rememberMe) {

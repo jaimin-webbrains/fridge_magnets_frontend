@@ -272,7 +272,7 @@ const Gallerys = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete Images?"}
+          message={"Are you sure you want to delete Images?"}
           handleConfirm={() => deleteClick()}
         />
       )}

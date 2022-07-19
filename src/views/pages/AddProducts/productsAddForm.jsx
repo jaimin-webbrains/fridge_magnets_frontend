@@ -32,7 +32,6 @@ const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
 const ProductsAddModal = (props) => {
-  
   //VARIABLES
   const {
     token,
@@ -48,6 +47,7 @@ const ProductsAddModal = (props) => {
     isValid,
     handleBlur,
     errors,
+    setFieldTouched,
     touched,
     submitCount,
   } = props;
@@ -222,18 +222,17 @@ const ProductsAddModal = (props) => {
   //IMAGE CHANGE
   const onProductImageChange = (e) => {
     const [file] = e.target.files;
-    if(file){
+    if (file) {
       setImg({ ...img, product_img: URL.createObjectURL(file) });
     }
   };
 
   const onBrandImageChange = (e, k) => {
-    const [file] = e.target.files;    
-    if(file){
+    const [file] = e.target.files;
+    if (file) {
       brandImg[k] = URL.createObjectURL(file);
       setBrandImg(brandImg);
-    }
-    else{
+    } else {
       brandImg[k] = "";
       setBrandImg(brandImg);
     }
@@ -242,32 +241,31 @@ const ProductsAddModal = (props) => {
   const handleProductSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
-    var formData = new FormData();
-    for (const val in values) {
-     
-      if (val === "deleted_brands") {
-        formData.append(val, JSON.stringify(values[val]));
-      } else if (val === "brands") {
-        brandimagArr.map((x) => formData.append("brand_image", x));
-        formData.append(val, JSON.stringify(values[val]));
-      } else if (val === "product_image") {
-        formData.append(val, productImage ? productImage : values[val]);
-      } else if (
-        val === "color_id" ||
-        val === "size_id" ||
-        val === "marker_id" ||
-        val === "paper_type_id"
-      ) {
-        formData.append(
-          val,
-          val && val !== null && val !== undefined ? values[val] : 0
-        );
-      } else {
-        formData.append(val, values[val]);
-      }
-    }
 
     if (isValid) {
+      var formData = new FormData();
+      for (const val in values) {
+        if (val === "deleted_brands") {
+          formData.append(val, JSON.stringify(values[val]));
+        } else if (val === "brands") {
+          brandimagArr.map((x) => formData.append("brand_image", x));
+          formData.append(val, JSON.stringify(values[val]));
+        } else if (val === "product_image") {
+          formData.append(val, productImage ? productImage : values[val]);
+        } else if (
+          val === "color_id" ||
+          val === "size_id" ||
+          val === "marker_id" ||
+          val === "paper_type_id"
+        ) {
+          formData.append(
+            val,
+            val && val !== null && val !== undefined ? values[val] : 0
+          );
+        } else {
+          formData.append(val, values[val]);
+        }
+      }
       fetching();
       id
         ? updateProduct(token, id, formData).then((data) => {
@@ -303,7 +301,7 @@ const ProductsAddModal = (props) => {
     // eslint-disable-next-line
   }, [values.parent_category_id]);
 
-   useEffect(() => {
+  useEffect(() => {
     List_allItems();
     // eslint-disable-next-line
   }, []);
@@ -366,8 +364,7 @@ const ProductsAddModal = (props) => {
                         )
                       : null
                   }
-                   onChange={(val) => 
-                    {
+                  onChange={(val) => {
                     setFieldValue("parent_category_id", val?.value);
                     setFieldValue("category_id", "");
                   }}
@@ -384,33 +381,37 @@ const ProductsAddModal = (props) => {
                 <CreatableSelect
                   isClearable
                   value={
-                    values.category_name && values.category_name !== null && values.category_id === 0?{value:values.category_name,label:values.category_name}:
-                     categoryOptions.find((x) => x.value === values.category_id)
+                    values.category_name &&
+                    values.category_name !== null &&
+                    values.category_id === 0
+                      ? {
+                          value: values.category_name,
+                          label: values.category_name,
+                        }
+                      : categoryOptions.find(
+                          (x) => x.value === values.category_id
+                        )
                       ? categoryOptions.find(
                           (x) => x.value === values.category_id
                         )
-                      : null                                  
+                      : null
                   }
-                 
-                  onCreateOption={(val)=>{                  
-                    setFieldValue("category_id",0)
-                    setFieldValue("category_name",val)                   
+                  onCreateOption={(val) => {
+                    setFieldValue("category_id", 0);
+                    setFieldValue("category_name", val);
                   }}
                   onChange={(val) => {
-                    if(val){
-                      setFieldValue("category_id", val?.value)
+                    if (val) {
+                      setFieldValue("category_id", val?.value);
+                    } else if (val === null) {
+                      setFieldValue("category_name",);
+                      setFieldValue("category_id", "");
                     }
-                    else if(val===null){
-                      setFieldValue("category_name",)
-                      setFieldValue("category_id","") 
-                    }
-                   }}
-                  options={values.parent_category_id?categoryOptions:null}
+                  }}
+                  options={values.parent_category_id ? categoryOptions : null}
                 />
                 <Error field="category_id" />
                 <Error field="category_name" />
-
-
               </div>
             </div>
 
@@ -465,30 +466,34 @@ const ProductsAddModal = (props) => {
                   isClearable
                   value={
                     //&&  values.color_name !== null
-                    values.color_name  && values.color_id === 0 ? {value:values.color_name,label:values.color_name}:
-                    colorOptions.find((x) => x.value === values.color_id)
+                    values.color_name && values.color_id === 0
+                      ? { value: values.color_name, label: values.color_name }
+                      : colorOptions.find((x) => x.value === values.color_id)
                       ? colorOptions.find((x) => x.value === values.color_id)
                       : null
                   }
-                  onCreateOption={(val)=>{
-                    setFieldValue("color_name",val)
-                    setFieldValue("color_id",0)                   
+                  onCreateOption={(val) => {
+                    // setFieldValue("color_ext", true);
+                    setFieldValue("color_name", val);
+                    setFieldValue("color_id", 0);
                   }}
+                onBlur = {(val)=>{
+                  setFieldTouched("color_name",val)
+                }}
                   onChange={(val) => {
                     if (val) {
                       setFieldValue("color_id", val?.value);
-                    }
-                     else if(val===null){
-                    setFieldValue("color_name",)
-                    setFieldValue("color_id",0)
-                  }
-                     else {
+                    } else if (val === null) {
+                      setFieldValue("color_name",);
+                      setFieldValue("color_id", 0);
+                    } else {
                       setFieldValue("color_id", 0);
                     }
                   }}
                   options={colorOptions}
                 />
                 <Error field="color_id" />
+                <Error field="color_name" />
               </div>
             </div>
             <div className="col-md-3">
@@ -501,29 +506,26 @@ const ProductsAddModal = (props) => {
                   isClearable
                   value={
                     //&&  values.size_val !== null
-                    values.size_val  && values.size_id === 0?{value:values.size_val,label:values.size_val}:
-                    sizeOptions.find((x) => x.value === values.size_id)
+                    values.size_val && values.size_id === 0
+                      ? { value: values.size_val, label: values.size_val }
+                      : sizeOptions.find((x) => x.value === values.size_id)
                       ? sizeOptions.find((x) => x.value === values.size_id)
                       : null
                   }
-                  onCreateOption={(val)=>{
-                    setFieldValue("size_val",val)  
-                    setFieldValue("size_id",0)                 
+                  onCreateOption={(val) => {
+                    setFieldValue("size_val", val);
+                    setFieldValue("size_id", 0);
                   }}
-                 
-                  onChange={(val) => 
-                   { if (val) {
-                    setFieldValue("size_id", val?.value)
-                    }
-                    else if(val===null){
-                      setFieldValue("size_val",)
-                      setFieldValue("size_id",0)
-                    }
-                     else {
+                  onChange={(val) => {
+                    if (val) {
+                      setFieldValue("size_id", val?.value);
+                    } else if (val === null) {
+                      setFieldValue("size_val");
+                      setFieldValue("size_id", 0);
+                    } else {
                       setFieldValue("size_id", 0);
                     }
-                  }
-                    }
+                  }}
                   options={sizeOptions}
                 />
                 <Error field="size_id" />
@@ -539,30 +541,30 @@ const ProductsAddModal = (props) => {
                   isClearable
                   value={
                     // &&  values.paper_type !== null
-                    values.paper_type && values.paper_type_id === 0?{value:values.paper_type,label:values.paper_type}:
-                    paperOptions.find((x) => x.value === values.paper_type_id)
+                    values.paper_type && values.paper_type_id === 0
+                      ? { value: values.paper_type, label: values.paper_type }
+                      : paperOptions.find(
+                          (x) => x.value === values.paper_type_id
+                        )
                       ? paperOptions.find(
                           (x) => x.value === values.paper_type_id
                         )
                       : null
                   }
-                  onCreateOption={(val)=>{
-                    setFieldValue("paper_type",val)  
-                    setFieldValue("paper_type_id",0)                 
+                  onCreateOption={(val) => {
+                    setFieldValue("paper_type", val);
+                    setFieldValue("paper_type_id", 0);
                   }}
-                  onChange={(val) =>
-                    { if (val) {
-                      setFieldValue("paper_type_id", val?.value)
-                      }
-                      else if(val===null){
-                        setFieldValue("paper_type",)
-                        setFieldValue("paper_type_id",0)
-                      }
-                       else {
-                        setFieldValue("paper_type_id", 0);
-                      }
+                  onChange={(val) => {
+                    if (val) {
+                      setFieldValue("paper_type_id", val?.value);
+                    } else if (val === null) {
+                      setFieldValue("paper_type");
+                      setFieldValue("paper_type_id", 0);
+                    } else {
+                      setFieldValue("paper_type_id", 0);
                     }
-                     }
+                  }}
                   options={paperOptions}
                 />
                 <Error field="paper_type_id" />
@@ -578,28 +580,26 @@ const ProductsAddModal = (props) => {
                   isClearable
                   value={
                     //&& values.marker_val !== null
-                    values.marker_val  && values.marker_id === 0?{value:values.marker_val,label:values.marker_val}:
-                    markerOptions.find((x) => x.value === values.marker_id)
+                    values.marker_val && values.marker_id === 0
+                      ? { value: values.marker_val, label: values.marker_val }
+                      : markerOptions.find((x) => x.value === values.marker_id)
                       ? markerOptions.find((x) => x.value === values.marker_id)
                       : null
                   }
-                  onCreateOption={(val)=>{
-                    setFieldValue("marker_val",val)  
-                    setFieldValue("marker_id", 0);                 
+                  onCreateOption={(val) => {
+                    setFieldValue("marker_val", val);
+                    setFieldValue("marker_id", 0);
                   }}
-                  onChange={(val) =>
-                    { if (val) {
-                      setFieldValue("marker_id", val?.value)
-                      }
-                      else if(val===null){
-                        setFieldValue("marker_val",)
-                        setFieldValue("marker_id",0)
-                      }
-                       else {
-                        setFieldValue("marker_id", 0);
-                      }
+                  onChange={(val) => {
+                    if (val) {
+                      setFieldValue("marker_id", val?.value);
+                    } else if (val === null) {
+                      setFieldValue("marker_val");
+                      setFieldValue("marker_id", 0);
+                    } else {
+                      setFieldValue("marker_id", 0);
                     }
-                    }
+                  }}
                   options={markerOptions}
                 />
                 <Error field="marker_id" />
@@ -684,26 +684,26 @@ const ProductsAddModal = (props) => {
                         accept="image/png, image/gif, image/jpeg"
                         onBlur={handleBlur}
                         onChange={(e) => {
-                          if(e.target.files[0]){                          
+                          if (e.target.files[0]) {
                             onBrandImageChange(e, k);
-                            setBrandImgArr([...brandimagArr, e.target.files[0]]);
+                            setBrandImgArr([
+                              ...brandimagArr,
+                              e.target.files[0],
+                            ]);
                             setFieldValue(
                               `brands[${k}].brandimg`,
                               e.target.files[0]?.name
-                            )                           
-                          }
-                          else{
-                            setFieldValue(`brands[${k}].brandimg`, "")
-                            brandimagArr[k] = ""
+                            );
+                          } else {
+                            setFieldValue(`brands[${k}].brandimg`, "");
+                            brandimagArr[k] = "";
                             setBrandImgArr([...brandimagArr]);
                           }
                         }}
                       />
 
                       <>
-                        {values.brands[k].brandimg!=="" && brandImg[k]? 
-                      
-                        (                            
+                        {values.brands[k].brandimg !== "" && brandImg[k] ? (
                           <a
                             href={brandImg[k]}
                             alt={"product_image"}
@@ -713,7 +713,6 @@ const ProductsAddModal = (props) => {
                           >
                             <img src={brandImg[k]} alt="product-img" />
                           </a>
-                            
                         ) : (
                           <>
                             <a
@@ -805,14 +804,13 @@ const ProductsAddModal = (props) => {
                 accept="image/png, image/gif, image/jpeg"
                 onBlur={handleBlur}
                 onChange={(e) => {
-                  if(e.target.files[0]){
+                  if (e.target.files[0]) {
                     onProductImageChange(e);
                     setProductImage(e.target.files[0]);
                     setFieldValue("product_image", e.target.files[0]?.name);
-                  }
-                  else{                  
-                    setProductImage()
-                    setFieldValue("product_image", "");                 
+                  } else {
+                    setProductImage();
+                    setFieldValue("product_image", "");
                   }
                 }}
               />

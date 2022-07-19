@@ -246,7 +246,7 @@ const Colors = props => {
           isOpen={openDeleteModal}
           onClose={() => toggleDeleteModalOpen(false)}
           confirmText={"Delete"}
-          message={"Are you sure to delete color ?"}
+          message={"Are you sure you want to  delete color ?"}
           handleConfirm={() => deleteClick()}
         />
       )}
