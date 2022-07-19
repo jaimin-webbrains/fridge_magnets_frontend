@@ -4,9 +4,10 @@ import * as Yup from "yup";
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
     phone_no: Yup.string()
-      .required("Please Enter Phone Number")
-      .max(10)
-      .min(10),
+      .matches(/^[0-9]*$/, "Please enter valid mobile number")
+      .min(9, "mobile number must be at least 9 characters")
+      .max(10, "mobile number must be at most 10 characters")
+      .required("Please Enter Mobile Number"),
     email: Yup.string()
       .email("Invalid Email Format")
       .required("Required"),

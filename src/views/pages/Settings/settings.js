@@ -67,7 +67,7 @@ const Settings = (props) => {
       return <span />;
     }
   };
-  console.log("values",values)
+  console.log("values", values);
   const handlesettingSubmit = async (e) => {
     e.preventDefault();
     handleSubmit();
@@ -113,20 +113,16 @@ const Settings = (props) => {
     await getsetting(token).then((data) => {
       if (data.success) {
         success(data.message);
-        console.log("getdata", data.data);
         setValues(data.data[0]);
       } else {
         error(data.message);
       }
     });
   };
-  console.log(values, "fhjgh");
   // //USEEFFECTS
 
   useEffect(() => {
     get_Setting();
-
-    // eslint-disable-next-line
   }, []);
   return (
     <>
@@ -151,7 +147,7 @@ const Settings = (props) => {
                   <input
                     type='text'
                     className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
+                    placeholder='Enter The Phone Number'
                     id='phone_no'
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -168,7 +164,7 @@ const Settings = (props) => {
                   <input
                     type='text'
                     className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
+                    placeholder='Enter The Email'
                     id='email'
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -186,7 +182,6 @@ const Settings = (props) => {
                     type='file'
                     accept='image/png, image/gif, image/jpeg'
                     // className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
                     id='logo'
                     onBlur={handleBlur}
                     onChange={(e) => {
@@ -194,15 +189,17 @@ const Settings = (props) => {
                       const [file] = e.target.files;
                       setImage(URL.createObjectURL(file));
                       setFieldValue("logo", e.target.files[0]);
-                    }}  
+                    }}
                     // value={values?.logo}
                   />
-                  {typeof values?.logo !== "string" ? (
+                  {values?.logo == "" || values == undefined ? (
+                    <></>
+                  ) : (
                     <span className='m-2'>
                       <a
                         href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
                       >
-                       {/*  eslint-disable-next-line */}
+                        {/*  eslint-disable-next-line */}
                         <img
                           src={image}
                           style={{
@@ -215,26 +212,7 @@ const Settings = (props) => {
                         ></img>
                       </a>
                     </span>
-                  ) : (
-                    <span className='m-2'>
-                      <a
-                        href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
-                      >
-                        <img
-                          src={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values?.logo}`}
-                          style={{
-                            width: "60px",
-                            height: "60px",
-                            border: "1px #ddd solid",
-                            padding: "3px",
-                            marginTop: "10px",
-                          }}
-                        ></img>
-                      </a>
-                    </span>
-                  ):
-                  <></>
-                  }
+                  )}
                   <Error field='logo' />
                 </div>
               </div>
@@ -266,7 +244,7 @@ const Settings = (props) => {
                 <input
                   type='text'
                   className='form-control react-form-input'
-                  placeholder='Enter The Product Name'
+                  placeholder='Enter The Artwork'
                   id='artwork_label1'
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -278,7 +256,7 @@ const Settings = (props) => {
                 <input
                   type='text'
                   className='form-control react-form-input'
-                  placeholder='Enter The Product Name'
+                  placeholder='Enter The Artwork'
                   id='artwork_label2'
                   onBlur={handleBlur}
                   onChange={handleChange}
