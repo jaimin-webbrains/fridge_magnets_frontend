@@ -70,7 +70,7 @@ const Sizes = props => {
         disableFilters: true,
         accessor: "size",
         Cell: tableInstance => (
-          <span className="text-capitalize">
+          <span className="">
             {tableInstance.row.values.size}
           </span>
         )

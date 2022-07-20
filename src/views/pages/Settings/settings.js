@@ -192,13 +192,15 @@ const Settings = (props) => {
                     }}  
                     // value={values?.logo}
                   />
-                  
-                  {values?.logo !== "" && values?.logo !== "null" ?
-                  typeof values.logo !== "string" ? (
+
+                 
+                  {
+                  // values?.logo !== "" && values?.logo !== "null" ?
+                  // typeof values.logo !== "string" 
+                 image && image !== "" ? (
                     
                     <span className='m-2'>
                       <a
-                        // href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
                         href = {image}
                       >
                        {/*  eslint-disable-next-line */}
@@ -232,9 +234,7 @@ const Settings = (props) => {
                         ></img>
                       </a>
                     </span>
-                  ):
-                  <></>
-                  }
+                  )}
                   <Error field='logo' />
                 </div>
               </div>

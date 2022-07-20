@@ -5,7 +5,7 @@ const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
     name: Yup.string()
       .required("Please enter Name")
-      .matches(/^[a-zA-Z]$/, "Please enter valid Brand Name")
+      .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please enter valid Brand Name")
       .max(50)
       ,
       
