@@ -151,7 +151,7 @@ const Login = props => {
                         <Error field="password" />
                     </div>
 
-                    <div className="form-check text-center mtb-16">
+                    {/* <div className="form-check text-center mtb-16">
                         <input
                             type="checkbox"
                             className="form-check-input"
@@ -163,17 +163,17 @@ const Login = props => {
                         >
                             Remember me
                         </label>
-                    </div>
+                    </div> */}
 
                     <button type="submit" className="btn form-button">
                         Login
                     </button>
-                    <div
+                    {/* <div
                         className="text-center link-label"
                         onClick={() => props.history.push("/forgotPassword")}
                     >
                         Forgot Password ?
-                    </div>
+                    </div> */}
                 </form>
             </div>
         </div>

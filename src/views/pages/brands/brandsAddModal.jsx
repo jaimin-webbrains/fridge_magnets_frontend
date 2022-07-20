@@ -120,7 +120,7 @@ const BrandsAddModal = (props) => {
           <Error field="name" />
         </div>
 
-        <div className="mb-16">
+        {/* <div className="mb-16">
           <label>
             Description <span className="error-msg">*</span>
           </label>
@@ -134,7 +134,7 @@ const BrandsAddModal = (props) => {
           />
 
           <Error field="description" />
-        </div>
+        </div> */}
 
         <Button
           className="btn c-primary btn-block"

@@ -76,25 +76,25 @@ const Brands = props => {
         )
       },
      
-      {
-        Header: tableInstance => {
-          return (
-            <HeaderComponent
-              isSortedDesc={tableInstance.column.isSortedDesc}
-              title="Description"
-            />
-          );
-        },
-        // Filter: FilterComponent,
-        placeholder: "Description",
-        disableFilters: true,
-        accessor: "description",
-        Cell: tableInstance => (
-          <span className="text-capitalize">
-            {tableInstance.row.values.description}
-          </span>
-        )
-      },
+      // {
+      //   Header: tableInstance => {
+      //     return (
+      //       <HeaderComponent
+      //         isSortedDesc={tableInstance.column.isSortedDesc}
+      //         title="Description"
+      //       />
+      //     );
+      //   },
+      //   // Filter: FilterComponent,
+      //   placeholder: "Description",
+      //   disableFilters: true,
+      //   accessor: "description",
+      //   Cell: tableInstance => (
+      //     <span className="text-capitalize">
+      //       {tableInstance.row.values.description}
+      //     </span>
+      //   )
+      // },
       {
         Header: tableInstance => {
           return (

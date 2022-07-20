@@ -14,7 +14,7 @@ import ConformationModal from "components/common/ConformationModal";
 import {  Plus, Trash } from "react-feather";
 import GallerysAddModal from "./gallerysAddModal";
 // import { getCategories } from "services/categoryServices";
-
+import "../../../assets/css/thumbnail.css"
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
@@ -30,6 +30,8 @@ const Gallerys = props => {
   const [openDeleteModal, toggleDeleteModalOpen] = useState();
   const [deleteId, setDeleteID] = useState("");
 
+  const [loader,setLoader] = useState(true)
+
 
   const HeaderComponent = props => {
     let classes = {
@@ -43,21 +45,25 @@ const Gallerys = props => {
     fetching();
     await getGallerys(token).then(data => {
       if (data.success) {
-        setGallerysList(data.data);
+        setGallerysList(data.data);        
+        setLoader(false)
         success();
         toggleRefresh(false);
       } else {
+        // setLoader(true)
         error(data.message);
       }
     });
-  
+
     // eslint-disable-next-line
-  }, []);
+  }, [loader]);
 
   useEffect(() => {
+
     refresh && getGallerysList();
     // eslint-disable-next-line
   }, [refresh]);
+
   const columns = useMemo(
     () => [
       {
@@ -94,6 +100,10 @@ const Gallerys = props => {
         disableFilters: true,
         accessor: "product_images",
         Cell: (tableInstance) => (
+         loader ? <div class="spinner-border" role="status">
+          <span class="visually-hidden"></span>
+        </div>
+        :
           <div className="thumbnail_img">
         {/* eslint-disable-next-line */}         
           <img src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.original.product_Images}`}  alt ="Image Not Found"></img> 

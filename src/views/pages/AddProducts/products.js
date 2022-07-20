@@ -306,7 +306,7 @@ const Products = (props) => {
                   setOpenModal(true);             
             }}
           >
-           <span><Plus className="mr-2" /> Import  </span>            
+           {/* <span><Plus className="mr-2" /> Import  </span>             */}
           </button>
           <button
             className="btn btn-blue"

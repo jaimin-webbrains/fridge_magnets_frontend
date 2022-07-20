@@ -8,12 +8,12 @@ const formikEnhancer = withFormik({
       .matches(/^[a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]$/, "Please enter valid Brand Name")
       .max(50)
       ,
-    description: Yup.string().required("Please enter description"),
+    // description: Yup.string().required("Please enter description"),
   }),
   validateOnMount: true,
   mapPropsToValues: (props) => ({
     name: "",
-    description: "",
+    description: "dfsdf",
     parent_id: 0,
   }),
   handleSubmit: (values) => {},
