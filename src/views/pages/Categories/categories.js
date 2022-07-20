@@ -58,6 +58,7 @@ const Categories = props => {
     // eslint-disable-next-line
   }, [refresh]);
 
+  console.log("categorysList",categorysList)
 
   const columns = useMemo(
     () => [
@@ -142,19 +143,28 @@ const Categories = props => {
             <div className="react-action-class">
               <button
                 className="table-action action-edit"
+               
+                style={{cursor: tableInstance.row.original.id > 2 ?"pointer":"default" }}
+
+                disabled={tableInstance.row.original.id > 2 ? false:true}
+
                 onClick={() => {
-                  props.history.push(
-                    `/Categories/Edit/${tableInstance.row.original.id}`
-                  );
+                  
+                   if(tableInstance.row.original.id !== 2 && tableInstance.row.original.id !== 1){
+                       props.history.push( `/Categories/Edit/${tableInstance.row.original.id}`)
+                     }
                   // setEditData(tableInstance.row.original);
                   // setIsEdit(true);
                   // setOpenModal(true);
                 }}
               >
-                <Edit3 className="table-icon-edit" />
+                <Edit3 className="table-icon-edit"
+                />
               </button>
               <button
                 className="table-action action-delete"
+                style={{cursor: tableInstance.row.original.id > 2 ?"pointer":"default" }}
+                disabled={tableInstance.row.original.id > 2 ? false:true}
                 onClick={() => {
                   toggleDeleteModalOpen(true);
                   setDeleteID(tableInstance.row.original.id);

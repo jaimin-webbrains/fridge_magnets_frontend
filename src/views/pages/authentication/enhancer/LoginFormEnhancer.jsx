@@ -9,8 +9,8 @@ const formikEnhancer = withFormik({
         password: Yup.string().required('Please Enter Any Password').min(8).max(16),
     }),
     mapPropsToValues: props => ({
-        email: 'superadmin@yopmail.com',
-        password: 'admin@123',
+        email: '',
+        password: '',
     }),
     handleSubmit: (values) => {},
     displayName: 'CustomValidationForm',

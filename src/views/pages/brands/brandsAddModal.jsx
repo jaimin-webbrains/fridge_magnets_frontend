@@ -38,7 +38,6 @@ const BrandsAddModal = (props) => {
     editData,
   } = props;
  
- 
   const Error = (props) => {
     const field1 = props.field;
     if ((errors[field1] && touched[field1]) || submitCount > 0) {

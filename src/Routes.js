@@ -26,6 +26,8 @@ const Routes = (props) => {
     toggleSubscriptionLoader,
   } = props;
 
+  console.log(props)
+
   const location = useLocation();
 
 
@@ -72,7 +74,7 @@ const Routes = (props) => {
           exact
           path="/"
           render={() =>
-            user?.id ? <Redirect to="/products" /> : <Redirect to="/login" />
+            token? <Redirect to="/products" /> : <Redirect to="/login" />
           }
         />
         {layoutRoutes.map((prop, key) => {
