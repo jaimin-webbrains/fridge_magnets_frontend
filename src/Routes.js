@@ -21,7 +21,7 @@ const Routes = (props) => {
     success,
     fetching,
     error,
-    user,
+    // user,
     user_id,
     toggleSubscriptionLoader,
   } = props;

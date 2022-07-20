@@ -32,7 +32,7 @@ const Header = (props) => {
         mini,
         token,
         user_id,
-        login,
+        // login,
         // user,
         success,
         error

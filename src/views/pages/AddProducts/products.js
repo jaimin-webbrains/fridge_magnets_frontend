@@ -298,7 +298,7 @@ const Products = (props) => {
         <div className="col-sm headline">Products</div>
         <div className="col-sm-auto ml-auto">
 
-        {/* <button
+        <button
             className="btn btn-blue"
             onClick={() => {
                   // setEditData(tableInstance.row.original);
@@ -307,7 +307,7 @@ const Products = (props) => {
             }}
           >
            <span><Plus className="mr-2" /> Import  </span>            
-          </button> */}
+          </button>
           <button
             className="btn btn-blue"
             onClick={() => {

@@ -844,7 +844,18 @@ const ProductsAddModal = (props) => {
                   />
                 </a>
               )}
+             
               <div>
+                {/* <div>
+
+              <a href = {values?.product_image}
+                alt={"product_image"}
+                target="_blank"
+                rel="noopener noreferrer">
+                <img src ={values?.product_image} alt={values?.product_image}/>
+
+              </a>
+                    </div> */}
                 <Error field="product_image" />
               </div>
             </div>

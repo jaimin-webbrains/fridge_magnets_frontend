@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import NavigationActions from "redux/navigation/actions";
 import { withRouter } from "react-router-dom";
 import { compose } from "redux";
@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import AuthActions from "redux/auth/actions";
 import { ModalHeader, ModalBody, Button } from "reactstrap";
 import "../../../assets/css/products_css.css";
+import Papa from "papaparse";
 import { importFiles } from "services/productServices";
 // import {
 //   addColor,
@@ -55,6 +56,10 @@ const ImportProductsmodal = (props) => {
 
   const handleProductsFile = async (e) => {
     e.preventDefault();
+
+    console.log("file", file);
+
+    return;
 
     var formData = new FormData();
     formData.append("file", file);
@@ -134,20 +139,35 @@ const ImportProductsmodal = (props) => {
             accept=".csv"
             // style  ={themeColor ? themeStyle : themeStyle1}
             onChange={(e) => {
-              if (e.target.files[0]) {
-                var fileName = e.target.files[0].name;
-                var ext = fileName.split(".").pop();
-                if (ext !== "csv") {
-                  setErrMsg(
-                    "File type Not Valid. Please upload only .csv File"
-                  );
-                } else {
-                  setErrMsg("");
-                  setFile(e.target.files[0]);
-                }
-              }
+              Papa.parse(e.target.files[0], {
+                header: true,
+                skipEmptyLines: true,
+                complete: function (results) {
+                  console.log(results.data)
+                  setFile(results.data)
+                },
+              })
+
+              // if (e.target.files[0]) {
+              //   var fileName = e.target.files[0].name;
+              //   var ext = fileName.split(".").pop();
+              //   if (ext !== "csv") {
+              //     setErrMsg(
+              //       "File type Not Valid. Please upload only .csv File"
+              //     );
+              //   } else {
+              //     setErrMsg("");
+              //     setFile(e.target.files[0]);
+              //   }
+              // }
             }}
           />
+
+          {/* <CSVReader
+            onFileLoaded={(data, fileInfo, originalFile) =>
+              console.dir(data, fileInfo, originalFile)
+            }
+          /> */}
 
           {/* <input
             type="file"
