@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import AuthActions from "redux/auth/actions";
-import {  Button } from "reactstrap";
+import { Button } from "reactstrap";
 
 // import { addColor, updateColor } from "services/colorServices";
 import { getsetting, updatesetting } from "services/settingservices";
@@ -15,7 +15,7 @@ import { getsetting, updatesetting } from "services/settingservices";
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
 
-const Settings = (props) => {
+const Settings = props => {
   //VARIABLES
   const {
     token,
@@ -35,7 +35,7 @@ const Settings = (props) => {
     touched,
     submitCount,
     // toggleRefresh,
-    setFieldValue,
+    setFieldValue
     // editData,
   } = props;
 
@@ -55,7 +55,7 @@ const Settings = (props) => {
   //     return <span />;
   //   }
   // };
-  const Error = (props) => {
+  const Error = props => {
     const field1 = props.field;
     if ((errors[field1] && touched[field1]) || submitCount > 0) {
       return (
@@ -67,7 +67,7 @@ const Settings = (props) => {
       return <span />;
     }
   };
-  const handlesettingSubmit = async (e) => {
+  const handlesettingSubmit = async e => {
     e.preventDefault();
     handleSubmit();
     // var data = { ...values };
@@ -97,7 +97,7 @@ const Settings = (props) => {
     //         }
     //       }):
     if (isValid) {
-      updatesetting(token, formData).then((data) => {
+      updatesetting(token, formData).then(data => {
         if (data.success) {
           success(data.message);
         } else {
@@ -108,7 +108,7 @@ const Settings = (props) => {
   };
 
   const get_Setting = async () => {
-    await getsetting(token).then((data) => {
+    await getsetting(token).then(data => {
       if (data.success) {
         success(data.message);
         setValues(data.data[0]);
@@ -126,84 +126,81 @@ const Settings = (props) => {
   }, []);
   return (
     <>
-      <div className='card'>
-        <div className='card-header'>Footer Details</div>
-        <div className='card-body'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-12 mb-2'>
+      <div className="card">
+        <div className="card-header">Footer Details</div>
+        <div className="card-body">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 mb-2">
                 {/* <span className=''>{`${id ? "Edit" : "Add"} Product`}</span> */}
               </div>
             </div>
 
             {/* ADD PRODUCT */}
 
-            <div className='row'>
-              <div className='col-md-4'>
-                <div className='form-group'>
+            <div className="row">
+              <div className="col-md-4">
+                <div className="form-group">
                   <label>
-                    Phone Number <span className='error-msg'>*</span>
+                    Phone Number <span className="error-msg">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
-                    id='phone_no'
+                    type="text"
+                    className="form-control react-form-input"
+                    placeholder="Enter The Product Name"
+                    id="phone_no"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values?.phone_no}
                   />
-                  <Error field='phone_no' />
+                  <Error field="phone_no" />
                 </div>
               </div>
-              <div className='col-md-4'>
-                <div className='form-group'>
+              <div className="col-md-4">
+                <div className="form-group">
                   <label>
-                    Email <span className='error-msg'>*</span>
+                    Email <span className="error-msg">*</span>
                   </label>
                   <input
-                    type='text'
-                    className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
-                    id='email'
+                    type="text"
+                    className="form-control react-form-input"
+                    placeholder="Enter The Product Name"
+                    id="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
                     value={values?.email}
                   />
-                  <Error field='email' />
+                  <Error field="email" />
                 </div>
               </div>
-              <div className='col-md-4'>
-                <div className='form-group'>
+              <div className="col-md-4">
+                <div className="form-group">
                   <label>
-                    Logo <span className='error-msg'>*</span>
+                    Logo <span className="error-msg">*</span>
                   </label>
                   <input
-                    type='file'
-                    accept='image/png, image/gif, image/jpeg'
+                    type="file"
+                    accept="image/png, image/gif, image/jpeg"
                     // className='form-control react-form-input'
-                    placeholder='Enter The Product Name'
-                    id='logo'
+                    placeholder="Enter The Product Name"
+                    id="logo"
                     onBlur={handleBlur}
-                    onChange={(e) => {
-                      const [file] = e.target.files;
-                      setImage(URL.createObjectURL(file));
-                      setFieldValue("logo", e.target.files[0]);
-                    }}  
-                    // value={values?.logo}
+                    onChange={e => {
+                      if (e.target.files[0]) {
+                        const [file] = e.target.files;
+                        setImage(URL.createObjectURL(file));
+                        setFieldValue("logo", e.target.files[0]);
+                      } else {
+                        setImage();
+                        setFieldValue("logo", "");
+                      }
+                    }}
                   />
 
-                 
-                  {
-                  // values?.logo !== "" && values?.logo !== "null" ?
-                  // typeof values.logo !== "string" 
-                 image && image !== "" ? (
-                    
-                    <span className='m-2'>
-                      <a
-                        href = {image}
-                      >
-                       {/*  eslint-disable-next-line */}
+                  {image && image !== "" ? (
+                    <span className="m-2">
+                      <a href={image}>
+                        {/*  eslint-disable-next-line */}
                         <img
                           src={image}
                           style={{
@@ -211,13 +208,13 @@ const Settings = (props) => {
                             height: "60px",
                             border: "1px #ddd solid",
                             padding: "3px",
-                            marginTop: "10px",
+                            marginTop: "10px"
                           }}
                         ></img>
                       </a>
                     </span>
-                  ) : (
-                    <span className='m-2'>
+                  ) : values.logo ? (
+                    <span className="m-2">
                       <a
                         href={`${process.env.REACT_APP_BACKEND_URI}/uploads/${values.logo}`}
                       >
@@ -228,74 +225,76 @@ const Settings = (props) => {
                             height: "60px",
                             border: "1px #ddd solid",
                             padding: "3px",
-                            marginTop: "10px",
+                            marginTop: "10px"
                           }}
                           alt="logo"
                         ></img>
                       </a>
                     </span>
+                  ) : (
+                    <></>
                   )}
-                  <Error field='logo' />
+                  <Error field="logo" />
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className='card mt-3'>
-        <div className='card-header'>Form Label</div>
-        <div className='card-body'>
-          <div className='container'>
-            <div className='row'>
-              <div className='col-12 mb-2'>
+      <div className="card mt-3">
+        <div className="card-header">Form Label</div>
+        <div className="card-body">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 mb-2">
                 {/* <span className=''>{`${id ? "Edit" : "Add"} Product`}</span> */}
               </div>
             </div>
 
             {/* ADD PRODUCT */}
 
-            <div className='row'>
-              <div className='col-md-4'>
+            <div className="row">
+              <div className="col-md-4">
                 <label>
-                  Artwork Label <span className='error-msg'>*</span>
+                  Artwork Label <span className="error-msg">*</span>
                 </label>
               </div>
             </div>
-            <div className='row'>
-              <div className='col-md-6'>
+            <div className="row">
+              <div className="col-md-6">
                 <input
-                  type='text'
-                  className='form-control react-form-input'
-                  placeholder='Enter The Product Name'
-                  id='artwork_label1'
+                  type="text"
+                  className="form-control react-form-input"
+                  placeholder="Enter The Product Name"
+                  id="artwork_label1"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values?.artwork_label1}
                 />
-                <Error field='artwork_label1' />
+                <Error field="artwork_label1" />
               </div>
-              <div className='col-md-6'>
+              <div className="col-md-6">
                 <input
-                  type='text'
-                  className='form-control react-form-input'
-                  placeholder='Enter The Product Name'
-                  id='artwork_label2'
+                  type="text"
+                  className="form-control react-form-input"
+                  placeholder="Enter The Product Name"
+                  id="artwork_label2"
                   onBlur={handleBlur}
                   onChange={handleChange}
                   value={values?.artwork_label2}
                 />
-                <Error field='artwork_label2' />
+                <Error field="artwork_label2" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className='row mt-2'>
-        <div className='col-12 text-center'>
+      <div className="row mt-2">
+        <div className="col-12 text-center">
           <Button
-            className='btn c-primary px-5'
-            onClick={(e) => handlesettingSubmit(e)}
-            type='button'
+            className="btn c-primary px-5 mt-10"
+            onClick={e => handlesettingSubmit(e)}
+            type="button"
             // disabled={isFetching}
           >
             {/* {id ? "Edit" : "Add"} */}
@@ -306,12 +305,12 @@ const Settings = (props) => {
     </>
   );
 };
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     ...state.themeChanger,
     token: state.auth.accessToken,
     user: state.auth.user,
-    isFetching: state.navigation.isFetching,
+    isFetching: state.navigation.isFetching
   };
 };
 

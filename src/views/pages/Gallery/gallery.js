@@ -11,14 +11,13 @@ import { useTable, useSortBy, useFilters, usePagination } from "react-table";
 import Pagination from "components/common/Pagination";
 import { deleteGallery, getGallerys } from "services/galleryServices";
 import ConformationModal from "components/common/ConformationModal";
-import {  Plus, Trash } from "react-feather";
+import { Plus, Trash } from "react-feather";
 import GallerysAddModal from "./gallerysAddModal";
 // import { getCategories } from "services/categoryServices";
-import "../../../assets/css/thumbnail.css"
+import "../../../assets/css/thumbnail.css";
 
 const { success, error, fetching } = NavigationActions;
 const { setuser } = AuthActions;
-
 
 const Gallerys = props => {
   const { token, success, error, fetching } = props;
@@ -30,8 +29,7 @@ const Gallerys = props => {
   const [openDeleteModal, toggleDeleteModalOpen] = useState();
   const [deleteId, setDeleteID] = useState("");
 
-  const [loader,setLoader] = useState(true)
-
+  const [loader, setLoader] = useState(true);
 
   const HeaderComponent = props => {
     let classes = {
@@ -41,13 +39,14 @@ const Gallerys = props => {
     return <div className={classNames(classes)}>{props.title}</div>;
   };
 
-   const getGallerysList = useCallback(async () => {
+  const getGallerysList = useCallback(async () => {
     fetching();
     await getGallerys(token).then(data => {
       if (data.success) {
-        setGallerysList(data.data);        
-        setLoader(false)
+        setGallerysList(data.data);
         success();
+        let loader_val = false;
+        setLoader(loader_val);
         toggleRefresh(false);
       } else {
         // setLoader(true)
@@ -57,9 +56,9 @@ const Gallerys = props => {
 
     // eslint-disable-next-line
   }, [loader]);
+  console.log(loader);
 
   useEffect(() => {
-
     refresh && getGallerysList();
     // eslint-disable-next-line
   }, [refresh]);
@@ -81,13 +80,12 @@ const Gallerys = props => {
         accessor: "category_id",
         Cell: tableInstance => (
           <span className="text-capitalize">
-          {tableInstance.row.original.category_name}
-
+            {tableInstance.row.original.category_name}
           </span>
         )
       },
       {
-        Header: (tableInstance) => {
+        Header: tableInstance => {
           return (
             <HeaderComponent
               isSortedDesc={tableInstance.column.isSortedDesc}
@@ -99,20 +97,22 @@ const Gallerys = props => {
         placeholder: "Product Image",
         disableFilters: true,
         accessor: "product_images",
-        Cell: (tableInstance) => (
-         loader ? <div class="spinner-border" role="status">
-          <span class="visually-hidden"></span>
-        </div>
-        :
-          <div className="thumbnail_img">
-        {/* eslint-disable-next-line */}         
-          <img src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.original.product_Images}`}  alt ="Image Not Found"></img> 
-          </div>
-        
-        ),
+        Cell: tableInstance =>
+          loader ? (
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden"></span>
+            </div>
+          ) : (
+            <div className="thumbnail_img">
+              {/* eslint-disable-next-line */}
+              <img
+                src={`${process.env.REACT_APP_BACKEND_UPLOAD_PATH}/${tableInstance.row.original.product_Images}`}
+                alt="Image Not Found"
+              ></img>
+            </div>
+          )
       },
-     
-      
+
       {
         Header: tableInstance => {
           return (
@@ -178,7 +178,6 @@ const Gallerys = props => {
     usePagination
   );
   const deleteClick = () => {
-    
     deleteGallery(token, { id: deleteId }).then(res => {
       if (res.success) {
         toggleRefresh(true);
@@ -191,37 +190,36 @@ const Gallerys = props => {
   };
   return (
     <div className="card m-2 p-2">
-    <div className="container-fluid">
-      <div className="row title-sec align-items-center">
-        <div className="col-sm headline">Gallery</div>
-        <div className="col-sm-auto ml-auto">
-          <button className="btn btn-blue" onClick={() => setOpenModal(true)}>
-            <Plus className="mr-2" /> Add Gallery
-          </button>
+      <div className="container-fluid">
+        <div className="row title-sec align-items-center">
+          <div className="col-sm headline">Gallery</div>
+          <div className="col-sm-auto ml-auto">
+            <button className="btn btn-blue" onClick={() => setOpenModal(true)}>
+              <Plus className="mr-2" /> Add Gallery
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="div-container">
-        <ReactTableWrapper {...props}>
-
-          <div className="table-responsive common-table">
-            <table className="table border-0" {...getTableProps()}>
-              <thead className="thead-dark">
-                {headerGroups.map(headerGroup => (
-                  <tr {...headerGroup.getHeaderGroupProps()}>
-                    {headerGroup.headers.map(header => (
-                      <th
-                        {...header.getHeaderProps(
-                          header.getSortByToggleProps()
-                        )}
-                      >
-                        <div>{header.render("Header")}</div>
-                      </th>
-                    ))}
-                  </tr>
-                ))}
-              </thead>
-              <tbody {...getTableBodyProps()}>
-                {/* {headerGroups.map((headerGroup) => (
+        <div className="div-container">
+          <ReactTableWrapper {...props}>
+            <div className="table-responsive common-table">
+              <table className="table border-0" {...getTableProps()}>
+                <thead className="thead-dark">
+                  {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                      {headerGroup.headers.map(header => (
+                        <th
+                          {...header.getHeaderProps(
+                            header.getSortByToggleProps()
+                          )}
+                        >
+                          <div>{header.render("Header")}</div>
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                  {/* {headerGroups.map((headerGroup) => (
                                   <tr {...headerGroup.getHeaderGroupProps()}>
                                       {headerGroup.headers.map((header) => {
                                           return (
@@ -242,52 +240,54 @@ const Gallerys = props => {
                                       })}
                                   </tr>
                               ))} */}
-                {page.map(row => {
-                  prepareRow(row);
-                  return (
-                    <tr {...row.getRowProps()}>
-                      {row.cells.map(cell => (
-                        <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
-                      ))}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          <Pagination
-            onPageChange={gotoPage}
-            pages={pageCount}
-            page={pageIndex}
-          />
-        </ReactTableWrapper>
+                  {page.map(row => {
+                    prepareRow(row);
+                    return (
+                      <tr {...row.getRowProps()}>
+                        {row.cells.map(cell => (
+                          <td {...cell.getCellProps()}>
+                            {cell.render("Cell")}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            <Pagination
+              onPageChange={gotoPage}
+              pages={pageCount}
+              page={pageIndex}
+            />
+          </ReactTableWrapper>
+        </div>
+        <Modal isOpen={isOpen} backdrop={true}>
+          {isOpen && (
+            <GallerysAddModal
+              onClose={() => {
+                setOpenModal(false);
+                setIsEdit(false);
+                setEditData({});
+              }}
+              isEdit={isEdit}
+              editData={editData}
+              toggleRefresh={e => toggleRefresh(e)}
+            />
+          )}
+        </Modal>
+        <Modal isOpen={openDeleteModal} backdrop={true}>
+          {openDeleteModal && (
+            <ConformationModal
+              isOpen={openDeleteModal}
+              onClose={() => toggleDeleteModalOpen(false)}
+              confirmText={"Delete"}
+              message={"Are you sure you want to delete Image?"}
+              handleConfirm={() => deleteClick()}
+            />
+          )}
+        </Modal>
       </div>
-      <Modal isOpen={isOpen} backdrop={true}>
-        {isOpen && (
-          <GallerysAddModal
-            onClose={() => {
-              setOpenModal(false);
-              setIsEdit(false);
-              setEditData({});
-            }}
-            isEdit={isEdit}
-            editData={editData}
-            toggleRefresh={e => toggleRefresh(e)}
-          />
-        )}
-      </Modal>
-      <Modal isOpen={openDeleteModal} backdrop={true}>
-      {openDeleteModal && (
-        <ConformationModal
-          isOpen={openDeleteModal}
-          onClose={() => toggleDeleteModalOpen(false)}
-          confirmText={"Delete"}
-          message={"Are you sure you want to delete Image?"}
-          handleConfirm={() => deleteClick()}
-        />
-      )}
-      </Modal>
-    </div>
     </div>
   );
 };
